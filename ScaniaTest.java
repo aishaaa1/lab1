@@ -29,17 +29,22 @@ class ScaniaTest {
     @Test
     void increaseFlake() {
         scania.currentSpeed = 0;
-        scania.increaseFlake();
+        scania.raiseFlake();
         System.out.print(scania.getFlake().getAngle());
     }
 
     @Test
     void move() {
-        int v = scania.getFlake().getAngle();
+        /*int v = scania.getFlake().getAngle();
          v = 30;
          scania.currentSpeed = 30;
          scania.move();
          System.out.print(scania.getCurrentSpeed());
+
+         */
+        scania.currentSpeed = 1;
+        scania.move();
+        System.out.print(scania.getPosition().getX());
     }
 
 

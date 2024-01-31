@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Scania extends Car {
+public class Scania extends Car implements MoveFlake {
     private final static double trimFactor = 2;
     private final Flake flake;
     public Scania() {
@@ -24,13 +24,15 @@ public class Scania extends Car {
     protected void decrementSpeed(double amount) {
 
     }
-    void increaseFlake() {
+    @Override
+    public void raiseFlake() {
         if (getCurrentSpeed() != 0) {
             throw new IllegalArgumentException("Vehicle is moving");
         }
         flake.increaseAngle();
     }
-    void decreaseFlake() {
+    @Override
+    public void lowerFlake() {
         if (getCurrentSpeed() != 0) {
             throw new IllegalArgumentException("Vehicle is moving");
         }
