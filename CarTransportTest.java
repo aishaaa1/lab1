@@ -7,53 +7,40 @@ class CarTransportTest {
     CarTransport truck;
     Volvo240 volvo;
     CarTransport test;
-
     @BeforeEach
     void setUp() {
-        truck = new CarTransport();
+        truck = new CarTransport(2);
         volvo = new Volvo240();
-        test = new CarTransport();
+        test = new CarTransport(2);
     }
-
     @Test
     void speedFactor() {
     }
-
     @Test
     void incrementSpeed() {
     }
-
     @Test
     void decrementSpeed() {
     }
-
     @Test
     void lowerFlake() {
     }
-
     @Test
     void raiseFlake() {
-
     }
-
     @Test
     void loadTruck() {
         // truck.loadTruck(test);
         truck.loadTruck(volvo);
         assertEquals(1, truck.getCars().size());
-
-
     }
-
     @Test
     void unloadTruck() {
     }
-
     @Test
     void isClose() {
         System.out.print(truck.isClose(volvo));
     }
-
     @Test
     void hasFlake() {
     }
