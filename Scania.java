@@ -3,6 +3,7 @@ import java.awt.*;
 public class Scania extends Truck implements MoveFlake{
     private final static double trimFactor = 2;
     private final Flake flake;
+
     public Scania() {
         super(2, 500, Color.BLUE, "Scania24");
         this.flake = new Flake(0);
