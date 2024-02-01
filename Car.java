@@ -137,4 +137,10 @@ public abstract class Car implements Movable {
         int find = Math.max(0, Math.min(index, dirs.length - 1));
         return dirs[find];
     }
+
+    @Override
+    public String toString() {
+        return "The car is a " + this.modelName + " of " + this.getClass();
+    }
+
 }
