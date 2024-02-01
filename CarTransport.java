@@ -2,12 +2,14 @@ import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class CarTransport extends Car implements MoveFlake, CanBeLoaded {
-    private final Deque<Car> cars = new ArrayDeque<>(5);
+public class CarTransport extends Truck implements MoveFlake {
+    private static int maxCapacity;
+    private final Deque<Vehicle> cars = new ArrayDeque<>(5);
     private final Flake flake = new Flake(MODE.UP);
-    public CarTransport(int nrDoors, double enginePower, Color color, String modelName) {
-        super(nrDoors, enginePower, color, modelName);
+    public CarTransport() {
+        super(2, 500, Color.WHITE, "modelName");
     }
+    public Deque<Vehicle> getCars() { return cars;}
     @Override
     protected double speedFactor() {
         return 0;
@@ -19,6 +21,11 @@ public class CarTransport extends Car implements MoveFlake, CanBeLoaded {
 
     @Override
     protected void decrementSpeed(double amount) {
+    }
+
+    @Override
+    boolean hasFlake() {
+        return true;
     }
 
     @Override
@@ -34,7 +41,7 @@ public class CarTransport extends Car implements MoveFlake, CanBeLoaded {
         flake.upFlake();
     }
 
-    public void loadTruck(Car car) {
+    public void loadTruck(Vehicle car) {
         if(isClose(car) && flake.getMode() == MODE.DOWN && this.hasFlake()) {
             cars.push(car);
             car.setPosition(this.position.getX(), this.position.getY());
@@ -45,15 +52,11 @@ public class CarTransport extends Car implements MoveFlake, CanBeLoaded {
             cars.pop().setPosition(this.position.getX() + 2, this.position.getY() + 2);
         }
     }
-    public boolean isClose(Car car) {
-        return this.getPosition().getX() - 2 == car.getPosition().getX()
-                && this.getPosition().getY() - 2 == car.getPosition().getY();
+    public boolean isClose(Vehicle car) {
+        return Math.abs(this.getPosition().getX() - 2) >= Math.abs(car.getPosition().getX())
+                && Math.abs(this.getPosition().getY() - 2) >= Math.abs(car.getPosition().getY());
     }
 
-    @Override
-    public boolean hasFlake() {
-        return true;
-    }
+
 }
 
-//canbeloaded interface för alla bilar som kan lastas

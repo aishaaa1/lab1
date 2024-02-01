@@ -50,6 +50,9 @@ public abstract class Car implements Movable {
         color = clr;
     }
     protected void setDirection(Direction dir) { direction = dir;}
+    protected void setPosition (int x, int y) {
+        this.position = new Position(x, y);
+    }
     public void startEngine(){
         currentSpeed = 0.1;
     }

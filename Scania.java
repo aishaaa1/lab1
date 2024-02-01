@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Scania extends Car implements MoveFlake {
+public class Scania extends Truck implements MoveFlake{
     private final static double trimFactor = 2;
     private final Flake flake;
     public Scania() {
@@ -8,7 +8,7 @@ public class Scania extends Car implements MoveFlake {
         this.flake = new Flake(0);
     }
 
-    Flake getFlake() {return flake;}
+    Flake getFlake() { return flake; }
 
 
     @Override
@@ -24,6 +24,12 @@ public class Scania extends Car implements MoveFlake {
     protected void decrementSpeed(double amount) {
 
     }
+
+    @Override
+    boolean hasFlake() {
+        return true;
+    }
+
     @Override
     public void raiseFlake() {
         if (getCurrentSpeed() != 0) {
@@ -48,10 +54,4 @@ public class Scania extends Car implements MoveFlake {
         }
     }
 
-
-    
-
-
-
-   
 }
