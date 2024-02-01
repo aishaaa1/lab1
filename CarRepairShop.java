@@ -10,7 +10,12 @@ public class CarRepairShop <Car> {
     }
 
     public void leaveCar (Car car) {
-        cars.add(car);
+        if (cars.size() < maxCapacity) {
+            cars.add(car);
+        }
+        else {
+            throw new IllegalArgumentException("Unfortunately we are full");
+        }
     }
     public void repairedCar (Car car){
         if(cars.contains(car)){

@@ -1,5 +1,7 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
 
 class CarRepairShopTest {
     Volvo240 car;
@@ -13,7 +15,8 @@ class CarRepairShopTest {
     @Test
     void leaveCar() {
         carRepairShop.cars.add(car);
-
+        boolean isTrue = carRepairShop.cars.getLast().equals(car);
+        Assertions.assertTrue(isTrue);
     }
 
     @Test

@@ -3,24 +3,27 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class CarTransport extends Truck implements MoveFlake {
-    private static int maxCapacity;
-    private final Deque<Vehicle> cars = new ArrayDeque<>(5);
+    private static final int trimFactor = 2;
+    private final Deque<Vehicle> cars;
     private final Flake flake = new Flake(MODE.UP);
-    public CarTransport() {
+    public CarTransport(int maxCapacity) {
         super(2, 500, Color.WHITE, "modelName");
+        this.cars = new ArrayDeque<>(maxCapacity);
     }
     public Deque<Vehicle> getCars() { return cars;}
     @Override
     protected double speedFactor() {
-        return 0;
+        return enginePower * 0.01 * trimFactor;
     }
 
     @Override
     protected void incrementSpeed(double amount) {
+        currentSpeed = Math.min(getCurrentSpeed() + speedFactor() * amount, enginePower);
     }
 
     @Override
     protected void decrementSpeed(double amount) {
+        currentSpeed = Math.max(getCurrentSpeed() - speedFactor() * amount, 0);
     }
 
     @Override

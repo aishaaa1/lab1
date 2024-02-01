@@ -9,9 +9,7 @@ public class Scania extends Truck implements MoveFlake{
         this.flake = new Flake(0);
     }
 
-    Flake getFlake() { return flake; }
-
-
+    public Flake getFlake() { return flake; }
     @Override
     protected double speedFactor() {
         return enginePower * 0.01 * trimFactor;
@@ -19,18 +17,18 @@ public class Scania extends Truck implements MoveFlake{
 
     @Override
     protected void incrementSpeed(double amount) {
+        currentSpeed = Math.min(getCurrentSpeed() + speedFactor() * amount, enginePower);
     }
 
     @Override
     protected void decrementSpeed(double amount) {
+        currentSpeed = Math.max(getCurrentSpeed() - speedFactor() * amount, 0);
 
     }
-
     @Override
     boolean hasFlake() {
         return true;
     }
-
     @Override
     public void raiseFlake() {
         if (getCurrentSpeed() != 0) {
