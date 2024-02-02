@@ -1,51 +1,35 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ScaniaTest {
-    Scania scania;
+    Scania car;
+
     @BeforeEach
     void setUp() {
-        scania = new Scania();
+        car = new Scania(2, Color.cyan, 234, "Scania");
     }
 
     @Test
-    void speedFactor() {
+    void raiseFlake() {
+        car.currentSpeed = 0;
+        car.raise();
+        System.out.print(car.getFlake().getAngle());
     }
-
     @Test
-    void incrementSpeed() {
+    void lowerFlake() {
     }
-
-    @Test
-    void decrementSpeed() {
-    }
-
-    @Test
-    void decreaseFlake() {
-    }
-
-    @Test
-    void increaseFlake() {
-        scania.currentSpeed = 0;
-        scania.raiseFlake();
-        System.out.print(scania.getFlake().getAngle());
-    }
-
+    /*
+    Want to test whether car stops when the angle is not 0
+     */
     @Test
     void move() {
-        /*int v = scania.getFlake().getAngle();
-         v = 30;
-         scania.currentSpeed = 30;
-         scania.move();
-         System.out.print(scania.getCurrentSpeed());
-
-         */
-        scania.currentSpeed = 1;
-        scania.move();
-        System.out.print(scania.getPosition().getX());
+        car.currentSpeed = 10;
+        car.getFlake().setAngle(20);
+        car.move();
+        assertEquals(0, car.currentSpeed);
     }
-
-
 }

@@ -2,64 +2,43 @@ import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class CarTransport extends Truck implements MoveFlake {
-    private static final int trimFactor = 2;
-    private final Deque<Vehicle> cars;
-    private final Flake flake = new Flake(MODE.UP);
-    public CarTransport(int maxCapacity) {
-        super(2, 500, Color.WHITE, "modelName");
-        this.cars = new ArrayDeque<>(maxCapacity);
-    }
-    public Deque<Vehicle> getCars() { return cars;}
-    @Override
-    protected double speedFactor() {
-        return enginePower * 0.01 * trimFactor;
+public class CarTransport extends Vehicle implements MoveFlake  {
+    private final Ramp ramp;
+    private final Deque<Vehicle> transport;
+    public CarTransport() {
+        super(2, Color.WHITE, 500, "Krone");
+        this.transport = new ArrayDeque<>();
+        this.ramp = new Ramp(MODE.UP);
     }
 
+    public Deque<Vehicle> getTransport() {return transport;}
+    public Ramp getRamp() {return ramp;}
     @Override
-    protected void incrementSpeed(double amount) {
-        currentSpeed = Math.min(getCurrentSpeed() + speedFactor() * amount, enginePower);
-    }
-
-    @Override
-    protected void decrementSpeed(double amount) {
-        currentSpeed = Math.max(getCurrentSpeed() - speedFactor() * amount, 0);
-    }
-
-    @Override
-    boolean hasFlake() {
-        return true;
-    }
-
-    @Override
-    public void lowerFlake() {
-        if(getCurrentSpeed() != 0){
+    public void lower() {
+        if (getCurrentSpeed() != 0) {
             throw new IllegalArgumentException("The car is moving");
         }
-        flake.downFlake();
+        ramp.downRamp();
     }
-
     @Override
-    public void raiseFlake() {
-        flake.upFlake();
+    public void raise() {
+        ramp.upRamp();
     }
 
     public void loadTruck(Vehicle car) {
-        if(isClose(car) && flake.getMode() == MODE.DOWN && this.hasFlake()) {
-            cars.push(car);
+        if (car instanceof MoveFlake) { throw new IllegalArgumentException("Can't load a truck");}
+        if(isClose(car) && ramp.getMode() == MODE.DOWN) {
+            this.transport.push(car);
             car.setPosition(this.position.getX(), this.position.getY());
         }
     }
     public void unloadTruck(){
-        if (flake.getMode() == MODE.DOWN) {
-            cars.pop().setPosition(this.position.getX() + 2, this.position.getY() + 2);
+        if (ramp.getMode() == MODE.DOWN) {
+            transport.pop().setPosition(this.position.getX() + 2, this.position.getY() + 2);
         }
     }
     public boolean isClose(Vehicle car) {
-        return Math.abs(this.getPosition().getX() - 2) >= Math.abs(car.getPosition().getX())
-                && Math.abs(this.getPosition().getY() - 2) >= Math.abs(car.getPosition().getY());
+        return Math.abs(this.position.getX() - 2) >= Math.abs(car.position.getX())
+                && Math.abs(this.position.getY() - 2) >= Math.abs(car.position.getY());
     }
-
-
 }
-

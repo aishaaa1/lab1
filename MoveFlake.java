@@ -1,4 +1,4 @@
 public interface MoveFlake {
-    void lowerFlake();
-    void raiseFlake();
+    void raise();
+    void lower();
 }

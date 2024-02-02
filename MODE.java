@@ -1,3 +1,3 @@
-public enum MODE { // intended for car transport
+public enum MODE {
     UP, DOWN;
 }
