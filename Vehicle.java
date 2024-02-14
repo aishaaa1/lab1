@@ -15,11 +15,13 @@ public abstract class Vehicle implements Movable {
         this.enginePower = enginePower;
         this.modelName = modelName;
         this.position = new Position(0,0);
+        this.direction = Direction.EAST; // This was always null therefore I added a default direction
         stopEngine();
     }
     protected Position getPosition() {
         return this.position;
     }
+    protected String getModelName(){return this.modelName;} // Get model name was not defined here
     protected Direction getDirection() { return this.direction; }
     protected void currentSpeed(double currentSpeed) {
         if (this.currentSpeed < 0) {
@@ -71,9 +73,9 @@ public abstract class Vehicle implements Movable {
             throw new IllegalArgumentException("Illegal amount " + amount);
         }
         else {
-            int old = (int) getCurrentSpeed();
+            double old =  getCurrentSpeed(); // it was integer I made it to doubles beacuse in Car controller gas is diveded by 100
             incrementSpeed(amount);
-            if (old > (int) getCurrentSpeed()) {
+            if (old > getCurrentSpeed()) {
                 currentSpeed = old;
             }
         }
@@ -83,9 +85,9 @@ public abstract class Vehicle implements Movable {
             throw new IllegalArgumentException("Illegal amount: " + amount);
         }
         else {
-            int old = (int) getCurrentSpeed();
+            double old =  getCurrentSpeed(); // Since the gas is divided by 100 I decided to make it double
             decrementSpeed(amount);
-            if ((int) getCurrentSpeed() > old) {
+            if ( getCurrentSpeed() > old) {
                 currentSpeed = old;
             }
         }
@@ -96,7 +98,7 @@ public abstract class Vehicle implements Movable {
         int y = position.getY();
         int x1 = x;
         int y1 = y;
-        startEngine();
+        //startEngine(); // If we call this we reset the speed of the vehicle to 0.1 which is not good
         if (direction == Direction.EAST) {
             x1 += (int) getCurrentSpeed();
         }
@@ -110,8 +112,8 @@ public abstract class Vehicle implements Movable {
             y1 -= (int) getCurrentSpeed();
         }
         int amount = (int) Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
-        gas(amount);
-        stopEngine();
+        /*gas(amount);  We do not need to change the gas value in the move
+        stopEngine();*/  // This is again not useful because we stop the car everytime the move function is called
         position = new Position(x1, y1);
     }
     @Override
@@ -142,5 +144,8 @@ public abstract class Vehicle implements Movable {
     @Override
     public String toString() {
         return "The car is a " + this.modelName + " of " + this.getClass();
+    }
+
+    public void setDirection(Direction direction) {
     }
 }

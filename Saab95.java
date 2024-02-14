@@ -17,4 +17,9 @@ public class Saab95 extends Vehicle {
         if(turboOn) turbo = 1.3;
         return enginePower * 0.01 * turbo;
     }
+
+    @Override
+    public String getModelName() {
+        return "Saab95";
+    }
 }

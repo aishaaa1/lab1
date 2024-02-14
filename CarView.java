@@ -111,12 +111,26 @@ public class CarView extends JFrame{
             }
         });
 
+
         brakeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 carC.brake(gasAmount);
             }
         });
+        /*turboOnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(Vehicle car : carC.cars){
+
+                    if(car.getModelName().equals("Saab95")){
+                        car.setTurboOn()
+                    }
+                }
+
+            }
+        }
+        );*/
 
         // Make the frame pack all it's components by respecting the sizes if possible.
         this.pack();
