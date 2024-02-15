@@ -16,17 +16,6 @@ public class Image {
 
     public String getModelName(){return this.modelName;}
 
-    public void UpdateImage(Image v, String modelName, Point p) {
-        try {
-            v = new Image(ImageIO.read(new File(modelName+".jpg")), modelName, p);
-            /*this.carImage.add(new Image(ImageIO.read(new File(modelName+".jpg")),
-                    p));
-             */
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public boolean notImage() {
         return image != null && position != null;
     }

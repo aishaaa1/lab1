@@ -26,14 +26,14 @@ public class CarController  {
     ArrayList<Vehicle> cars = new ArrayList<>();
 
     // A list of workshops?
-    CarRepairShop<Volvo240> volvoWorkshop;
+
 
     //methods:
 
     public static void main(String[] args) {
         // Instance of this class
         CarController cc = new CarController();
-        cc.volvoWorkshop = new CarRepairShop<Volvo240>(1);
+
 
         cc.cars.add(new Volvo240());
         cc.cars.add(new Saab95());
@@ -135,20 +135,5 @@ public class CarController  {
             v.stopEngine();
         }
     }
-    void leaveCarAtWorkshop(){
-        for (Vehicle v : cars){
-            if (v instanceof  Volvo240 ){
-                volvoWorkshop.leaveCar((Volvo240) v);
-                v.stopEngine();
 
-            }
-        }
-    }
-    void retrieveCarFromWorkshop() {
-        for (Vehicle v : cars) {
-            if (v instanceof Volvo240 && volvoWorkshop.isCarRepaired((Volvo240) v)) {
-                v.startEngine();
-            }
-        }
-    }
 }
