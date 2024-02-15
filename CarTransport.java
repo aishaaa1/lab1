@@ -41,4 +41,9 @@ public class CarTransport extends Vehicle implements MoveFlake  {
         return Math.abs(this.position.getX() - 2) >= Math.abs(car.position.getX())
                 && Math.abs(this.position.getY() - 2) >= Math.abs(car.position.getY());
     }
+
+    @Override
+    public String getModelName() {
+        return null;
+    }
 }

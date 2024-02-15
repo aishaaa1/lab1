@@ -12,4 +12,8 @@ public class Volvo240 extends Vehicle {
     }
 
 
+    @Override
+    public String getModelName() {
+        return "Volvo240";
+    }
 }

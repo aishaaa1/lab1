@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -31,7 +32,8 @@ public class CarController  {
         CarController cc = new CarController();
 
         cc.cars.add(new Volvo240());
-
+        cc.cars.add(new Saab95());
+        cc.cars.add(new Scania(2, Color.red,80,"Scania"));
 
         // Start a new view and send a reference of self
         cc.frame = new CarView("CarSim 1.0", cc);
@@ -72,7 +74,7 @@ public class CarController  {
         boolean leftScreen = 0 > p.getX() && Direction.WEST == dir;
         boolean rightScreen = frame.getWidth() < p.getX() + frame.drawPanel.getVehicleWidth() && Direction.EAST == dir;
         return leftScreen || rightScreen;
-    }
+    } 
 
     // Calls the gas method for each car once
     void gas(int amount) {
