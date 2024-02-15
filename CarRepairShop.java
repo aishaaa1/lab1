@@ -24,6 +24,9 @@ public class CarRepairShop <T extends Vehicle> {
         }
         else throw new IllegalArgumentException("This car is not in repair");
     }
+    public boolean isCarRepaired(T v) {
+        return vehicles.remove(v);
+    }
 
 
 
