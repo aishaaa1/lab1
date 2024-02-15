@@ -7,8 +7,6 @@ public class Scania extends Vehicle implements MoveFlake {
         this.flake = new Flake(0);
     }
 
-
-
     public Flake getFlake() {return flake;}
 
     @Override

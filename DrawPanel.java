@@ -22,12 +22,12 @@ public class  DrawPanel extends JPanel{
     private Image volvoImage;
     private Image saabImage;
     private Image scaniaImage;
+    private Image volvoWorkshop;
     Point volvoPoint = new Point();
     Point scaniaPoint = new Point(0,100);
     Point saabPoint = new Point(0, 200);
-
     BufferedImage volvoWorkshopImage;
-    Point volvoWorkshopPoint = new Point(300, 300);
+    Point volvoWorkshopPoint = new Point(700, 0);
 
     // TODO: Make this general for all cars
     void moveit(int x, int y, String modelName) {
@@ -81,7 +81,8 @@ public class  DrawPanel extends JPanel{
             volvoImage = new Image(ImageIO.read(new File("pics/Volvo240.jpg")), "Volvo240", volvoPoint);
             saabImage = new Image(ImageIO.read(new File ("pics/Saab95.jpg")), "Saab95", saabPoint);
             scaniaImage = new Image(ImageIO.read(new File("pics/Scania.jpg")), "Scania", scaniaPoint);
-        //volvoWorkshopImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/VolvoBrand.jpg"));
+            //volvoWorkshop = new Image(ImageIO.read(new File("pics/VolvoBrand.jpg")), "VolvoWorkshop", volvoWorkshopPoint);
+            volvoWorkshopImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/VolvoBrand.jpg"));
 
 
 

@@ -25,15 +25,19 @@ public class CarController  {
     // A list of cars, modify if needed
     ArrayList<Vehicle> cars = new ArrayList<>();
 
+    // A list of workshops?
+    CarRepairShop<Volvo240> volvoWorkshop;
+
     //methods:
 
     public static void main(String[] args) {
         // Instance of this class
         CarController cc = new CarController();
+        cc.volvoWorkshop = new CarRepairShop<Volvo240>(1);
 
         cc.cars.add(new Volvo240());
         cc.cars.add(new Saab95());
-        cc.cars.add(new Scania(2, Color.red,80,"Scania"));
+        cc.cars.add(new Scania(2, Color.red,190,"Scania"));
 
         // Start a new view and send a reference of self
         cc.frame = new CarView("CarSim 1.0", cc);
@@ -50,7 +54,8 @@ public class CarController  {
             for (Vehicle car : cars) {
 
                 if(notWithinBounds(car.getPosition(), car.getDirection())) {
-                    reverseVehicle(car);
+                    if (car instanceof Volvo240) {car.stopEngine();}
+                    else {reverseVehicle(car);}
                 }
                 car.move();
                 int x = (int) Math.round(car.getPosition().getX());
@@ -74,7 +79,7 @@ public class CarController  {
         boolean leftScreen = 0 > p.getX() && Direction.WEST == dir;
         boolean rightScreen = frame.getWidth() < p.getX() + frame.drawPanel.getVehicleWidth() && Direction.EAST == dir;
         return leftScreen || rightScreen;
-    } 
+    }
 
     // Calls the gas method for each car once
     void gas(int amount) {
@@ -83,7 +88,6 @@ public class CarController  {
             car.gas(gas);
         }
     }
-
     void brake(int amount) {
         double brake = ((double) amount) / 100;
         for (Vehicle car : cars){
@@ -91,6 +95,60 @@ public class CarController  {
         }
     }
 
+    void saabTurboOn() {
+        for (Vehicle v : cars) {
+            if (v instanceof hasTurbo) {
+                ((Saab95) v).setTurboOn();
+            }
+        }
+    }
 
+    void saabTurboOff() {
+        for (Vehicle v : cars) {
+            if (v instanceof hasTurbo) {
+                ((Saab95) v).setTurboOff();
+            }
+        }
+    }
+    void liftBedButton(){
+        for (Vehicle v : cars){
+            if(v instanceof MoveFlake){
+                ((Scania)v).raise();
+            }
+        }
 
+    }
+    void lowerBedButton(){
+        for(Vehicle v: cars){
+            if(v instanceof MoveFlake){
+                ((Scania) v).lower();
+            }
+        }
+    }
+    void startAllCars() {
+        for (Vehicle v : cars) {
+            v.startEngine();
+        }
+    }
+    void stopAllCars() {
+        for (Vehicle v : cars) {
+            v.stopEngine();
+        }
+    }
+    void leaveCarAtWorkshop(){
+        for (Vehicle v : cars){
+            if (v instanceof  Volvo240 ){
+                volvoWorkshop.leaveCar((Volvo240) v);
+                v.stopEngine();
+
+            }
+        }
+    }
+    void retrieveCarFromWorkshop() {
+        for (Vehicle v : cars) {
+            if (v instanceof Volvo240 && volvoWorkshop.isCarRepaired((Volvo240) v)) {
+                v.startEngine();
+            }
+        }
+    }
 }

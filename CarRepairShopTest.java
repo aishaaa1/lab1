@@ -19,6 +19,7 @@ class CarRepairShopTest {
         saab951 = new Saab95();
         saab952 = new Saab95();
         saab953 = new Saab95();
+
     }
     /*
     A relevant test for leaveCar() is to see if there will be a static compile error when trying to
@@ -44,5 +45,11 @@ class CarRepairShopTest {
         saab95CarRepairShop.repairedCar(saab951);
         assertEquals(0, saab95CarRepairShop.vehicles.size());
 
+    }
+
+    @Test
+    void isCarRepaired() {
+        saab95CarRepairShop.leaveCar(saab951);
+        assertEquals(true, saab95CarRepairShop.isCarRepaired(saab951));
     }
 }
