@@ -62,7 +62,7 @@ public class CarController  {
                 car.move();
                 int x = (int) Math.round(car.getPosition().getX());
                 int y = (int) Math.round(car.getPosition().getY());
-                frame.drawPanel.moveit(x, y, String.valueOf(car.getModelName()));
+                frame.drawPanel.moveImage(x, y, String.valueOf(car.getModelName()));
                 //repaint() calls the paintComponent method of the panel
                 frame.drawPanel.repaint();
             }
