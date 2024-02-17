@@ -25,7 +25,6 @@ public class VehicleImage {
         g.drawImage(image, imagePoint.x, imagePoint.y, null);
     }
     public int getImageWidth() { return image.getWidth(); }
-
     public int getX() {return imagePoint.x;}
     public int getY() {return imagePoint.y;}
 
