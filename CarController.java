@@ -24,6 +24,7 @@ public class CarController  {
     CarView frame;
     // A list of cars, modify if needed
     ArrayList<Vehicle> cars = new ArrayList<>();
+    DrawPanel drawPanel = new DrawPanel(200,200);
 
     // A list of workshops?
 
@@ -35,9 +36,10 @@ public class CarController  {
         CarController cc = new CarController();
 
 
+
         cc.cars.add(new Volvo240());
         cc.cars.add(new Saab95());
-        cc.cars.add(new Scania(2, Color.red,190,"Scania"));
+        cc.cars.add(new Scania());
 
         // Start a new view and send a reference of self
         cc.frame = new CarView("CarSim 1.0", cc);
@@ -60,7 +62,7 @@ public class CarController  {
                 car.move();
                 int x = (int) Math.round(car.getPosition().getX());
                 int y = (int) Math.round(car.getPosition().getY());
-                frame.drawPanel.moveit(x, y, car.getModelName());
+                frame.drawPanel.moveit(x, y, String.valueOf(car.getModelName()));
                 //repaint() calls the paintComponent method of the panel
                 frame.drawPanel.repaint();
             }
@@ -135,5 +137,4 @@ public class CarController  {
             v.stopEngine();
         }
     }
-
 }
