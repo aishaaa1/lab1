@@ -50,9 +50,13 @@ public class CarController  {
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             for (Vehicle car : cars) {
-
                 if(notWithinBounds(car.getPosition(), car.getDirection())) {
-                    reverseVehicle(car);
+                    if (car instanceof Volvo240) {
+                        car.stopEngine();
+                    }
+                    else {
+                        reverseVehicle(car);
+                    }
                 }
                 car.move();
                 int x = (int) Math.round(car.getPosition().getX());

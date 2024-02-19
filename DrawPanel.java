@@ -10,14 +10,7 @@ import java.util.List;
 // This panel represents the animated part of the view with the car images.
 
 public class  DrawPanel extends JPanel{
-
-
     // Just a single image, TODO: Generalize
-    //BufferedImage volvoImage;
-
-    // To keep track of a single car's position
-    //Point volvoPoint = new Point();
-    //private Image Vehicle;
     List<Image> vehicles = new ArrayList<>();
     private Image volvoImage;
     private Image saabImage;
@@ -41,28 +34,8 @@ public class  DrawPanel extends JPanel{
         }
         if (modelName.equals("Scania")) {
             scaniaPoint.x = x;
-            scaniaPoint.y = y+100;
+            scaniaPoint.y = y + 100;
         }
-
-       /* for (Image v : vehicles) {
-            try {
-                if (v.getModelName().equals("Saab95")) {
-                    v = new Image(ImageIO.read(new File(modelName+".jpg")), modelName, new Point(x,y));
-                }
-                if (v.getModelName().equals("Volvo240")) {
-                    v = new Image(ImageIO.read(new File(modelName+".jpg")), modelName, new Point(x,y));
-                }
-                if (v.getModelName().equals("Scania")) {
-                    v = new Image(ImageIO.read(new File(modelName+".jpg")), modelName, new Point(x,y));
-                }
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }*/
-
-
     }
 
     // Initializes the panel and reads the images
@@ -81,19 +54,12 @@ public class  DrawPanel extends JPanel{
             volvoImage = new Image(ImageIO.read(new File("pics/Volvo240.jpg")), "Volvo240", volvoPoint);
             saabImage = new Image(ImageIO.read(new File ("pics/Saab95.jpg")), "Saab95", saabPoint);
             scaniaImage = new Image(ImageIO.read(new File("pics/Scania.jpg")), "Scania", scaniaPoint);
-        //volvoWorkshopImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/VolvoBrand.jpg"));
-
-
-
+            volvoWorkshopImage = ImageIO.read(DrawPanel.class.getResourceAsStream("pics/VolvoBrand.jpg"));
         } catch (IOException ex)
         {
             ex.printStackTrace();
         }
-
     }
-
-
-
     public int getVehicleWidth() {return volvoImage.getImage().getWidth();}
 
     // This method is called each time the panel updates/refreshes/repaints itself
