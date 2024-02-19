@@ -42,6 +42,8 @@ public class CarController  {
         cc.timer.start();
     }
 
+
+
     /* Each step the TimerListener moves all the cars in the list and tells the
     * view to update its images. Change this method to your needs.
     * */
@@ -74,7 +76,7 @@ public class CarController  {
         boolean leftScreen = 0 > p.getX() && Direction.WEST == dir;
         boolean rightScreen = frame.getWidth() < p.getX() + frame.drawPanel.getVehicleWidth() && Direction.EAST == dir;
         return leftScreen || rightScreen;
-    }
+    } 
 
     // Calls the gas method for each car once
     void gas(int amount) {
@@ -91,6 +93,46 @@ public class CarController  {
         }
     }
 
+     void saabTurboOn() {
+        for (Vehicle v : cars) {
+            if (v instanceof hasTurbo) {
+                ((Saab95) v).setTurboOn();
+            }
+        }
+    }
+
+    void saabTurboOff() {
+        for (Vehicle v : cars) {
+            if (v instanceof hasTurbo) {
+                ((Saab95) v).setTurboOff();
+            }
+        }
+    }
+    void liftBedButton(){
+        for (Vehicle v : cars){
+            if(v instanceof MoveFlake){
+                ((Scania)v).raise();
+            }
+        }
+
+    }
+    void lowerBedButton(){
+        for(Vehicle v: cars){
+            if(v instanceof MoveFlake){
+                ((Scania) v).lower();
+            }
+        }
+    }
+    void startAllCars() {
+        for (Vehicle v : cars) {
+            v.startEngine();
+        }
+    }
+    void stopAllCars() {
+        for (Vehicle v : cars) {
+            v.stopEngine();
+        }
+    }
 
 
 }

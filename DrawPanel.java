@@ -21,13 +21,13 @@ public class  DrawPanel extends JPanel{
     List<Image> vehicles = new ArrayList<>();
     private Image volvoImage;
     private Image saabImage;
-    private Image scaniaImage;
+    private Image scaniaImage; 
     Point volvoPoint = new Point();
     Point scaniaPoint = new Point(0,100);
     Point saabPoint = new Point(0, 200);
 
     BufferedImage volvoWorkshopImage;
-    Point volvoWorkshopPoint = new Point(300, 300);
+    Point volvoWorkshopPoint = new Point(700, 0);
 
     // TODO: Make this general for all cars
     void moveit(int x, int y, String modelName) {
