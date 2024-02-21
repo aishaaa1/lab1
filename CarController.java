@@ -1,8 +1,11 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 
 
 /*
@@ -11,14 +14,30 @@ import java.util.ArrayList;
 * modifying the model state and the updating the view.
  */
 
-public class CarController  {
+public class CarController implements ActionButtons, HasButtons{
     // member fields:
 
     // The delay (ms) corresponds to 20 updates a sec (hz)
+
+    //Buttons
+    JButton gasButton = new JButton("Gas");
+    JButton brakeButton = new JButton("Brake");
+    JButton turboOnButton = new JButton("Saab Turbo on");
+    JButton turboOffButton = new JButton("Saab Turbo off");
+    JButton liftBedButton = new JButton("Scania Lift Bed");
+    JButton lowerBedButton = new JButton("Lower Lift Bed");
+
+    JButton startButton = new JButton("Start all cars");
+    JButton stopButton = new JButton("Stop all cars");
+
+    JSpinner gasSpinner;
+    int gasAmount=0;
+
     private final int delay = 50;
     // The timer is started with a listener (see below) that executes the statements
     // each step between delays.
     private Timer timer = new Timer(delay, new TimerListener());
+
 
     // The frame that represents this instance View of the MVC pattern
     CarView frame;
@@ -42,8 +61,31 @@ public class CarController  {
         cc.timer.start();
     }
 
+    // We link the buttons to actions in the constructor.
+    public CarController(){
+        SpinnerModel spinnerModel =
+                new SpinnerNumberModel(0, //initial value
+                        0, //min
+                        100, //max
+                        1);//step
+        gasSpinner = new JSpinner(spinnerModel);
 
+        gasSpinner.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                gasAmount = (int) ((JSpinner)e.getSource()).getValue();
+            }
+        });
 
+        addActionListenerWithFunction(startButton, () -> startAllCars());
+        addActionListenerWithFunction(stopButton,()-> stopAllCars());
+        addActionListenerWithFunction(gasButton, () -> gas(gasAmount));
+        addActionListenerWithFunction(brakeButton, () -> brake(gasAmount));
+        addActionListenerWithFunction(turboOnButton, () -> saabTurboOn());
+        addActionListenerWithFunction(turboOffButton, () -> saabTurboOff());
+        addActionListenerWithFunction(lowerBedButton, () -> lowerBedButton());
+        addActionListenerWithFunction(liftBedButton, () -> liftBedButton());
+
+    }
     /* Each step the TimerListener moves all the cars in the list and tells the
     * view to update its images. Change this method to your needs.
     * */
@@ -68,7 +110,7 @@ public class CarController  {
         }
     }
 
-    void reverseVehicle(Vehicle car){
+    public void reverseVehicle(Vehicle car){
         car.stopEngine();
         car.turnLeft();
         car.turnLeft();
@@ -76,28 +118,29 @@ public class CarController  {
         car.gas(0.5);
     }
 
-    boolean notWithinBounds(Position p, Direction dir){
+    public boolean notWithinBounds(Position p, Direction dir){
         boolean leftScreen = 0 > p.getX() && Direction.WEST == dir;
         boolean rightScreen = frame.getWidth() < p.getX() + frame.drawPanel.getVehicleWidth() && Direction.EAST == dir;
         return leftScreen || rightScreen;
     } 
 
     // Calls the gas method for each car once
-    void gas(int amount) {
+    public void gas(int amount) {
         double gas = ((double) amount) / 100;
         for (Vehicle car : cars) {
             car.gas(gas);
         }
     }
 
-    void brake(int amount) {
+
+     public void brake(int amount) {
         double brake = ((double) amount) / 100;
         for (Vehicle car : cars){
             car.brake(brake);
         }
     }
 
-     void saabTurboOn() {
+      public void saabTurboOn() {
         for (Vehicle v : cars) {
             if (v instanceof hasTurbo) {
                 ((Saab95) v).setTurboOn();
@@ -105,14 +148,14 @@ public class CarController  {
         }
     }
 
-    void saabTurboOff() {
+    public void saabTurboOff() {
         for (Vehicle v : cars) {
             if (v instanceof hasTurbo) {
                 ((Saab95) v).setTurboOff();
             }
         }
     }
-    void liftBedButton(){
+     public void liftBedButton(){
         for (Vehicle v : cars){
             if(v instanceof MoveFlake){
                 ((Scania)v).raise();
@@ -120,23 +163,32 @@ public class CarController  {
         }
 
     }
-    void lowerBedButton(){
+    public void lowerBedButton(){
         for(Vehicle v: cars){
             if(v instanceof MoveFlake){
                 ((Scania) v).lower();
             }
         }
     }
-    void startAllCars() {
+    public void startAllCars() {
         for (Vehicle v : cars) {
             v.startEngine();
         }
     }
-    void stopAllCars() {
+    public void stopAllCars() {
         for (Vehicle v : cars) {
             v.stopEngine();
         }
     }
 
+    // Action Listeners
+    public static void addActionListenerWithFunction(AbstractButton button, Runnable func) {
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                func.run();
+            }
+        });
+    }
 
 }
