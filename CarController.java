@@ -76,6 +76,7 @@ public class CarController implements ActionButtons, HasButtons{
             }
         });
 
+
         addActionListenerWithFunction(startButton, () -> startAllCars());
         addActionListenerWithFunction(stopButton,()-> stopAllCars());
         addActionListenerWithFunction(gasButton, () -> gas(gasAmount));
