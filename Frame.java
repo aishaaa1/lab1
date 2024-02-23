@@ -6,7 +6,7 @@ public class Frame {
     private static final int HEIGHT = 800;
     JFrame frame = new JFrame();
 
-    CarView carView = new CarView(WIDTH, HEIGHT);
+
     DrawPanel drawPanel = new DrawPanel(WIDTH, HEIGHT - 240);
     public Frame(String title) {
         initComponents(title);
@@ -15,12 +15,18 @@ public class Frame {
         frame.setTitle(title);
         frame.setSize(new Dimension());
         frame.add(drawPanel, BorderLayout.NORTH);
-        frame.add(carView, BorderLayout.WEST);
+        //frame.add(carView, BorderLayout.WEST);
         frame.setVisible(true);
         frame.pack();
+        // Get the computer screen resolution
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        // Center the frame
+        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
+        // Make sure the frame exits when "x" is pressed
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    void moveFrame(int x, int y, String modelName) {
-        drawPanel.moveImage(x, y , modelName);
+    void moveFrame(int x, String modelName) {
+        drawPanel.moveImage(x, modelName);
     }
     void repaintFrame() {
         drawPanel.repaint();

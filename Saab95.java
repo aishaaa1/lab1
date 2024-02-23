@@ -1,5 +1,5 @@
 import java.awt.*;
-public class Saab95 extends Vehicle {
+public class Saab95 extends Vehicle implements hasTurbo {
     private boolean turboOn;
     public Saab95(){
         super (2, Color.red, 200, "Saab95");

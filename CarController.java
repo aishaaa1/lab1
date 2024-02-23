@@ -13,7 +13,7 @@ import java.util.ArrayList;
 * modifying the model state and the updating the view.
  */
 
-public class CarController  {
+public class CarController extends JFrame implements ActionButtons, HasButtons   {
     // member fields:
 
     // The delay (ms) corresponds to 20 updates a sec (hz)
@@ -37,9 +37,7 @@ public class CarController  {
 
     private static final int X = 800;
     private static final int Y = 240;
-    Frame frame;
-
-
+    private Frame frame;
     private final int delay = 50;
     // The timer is started with a listener (see below) that executes the statements
     // each step between delays.
@@ -48,27 +46,16 @@ public class CarController  {
 
     // The frame that represents this instance View of the MVC patter
     // A list of cars, modify if needed
-    ArrayList<Vehicle> cars = new ArrayList<>();
+    private ArrayList<Vehicle> cars = new ArrayList<>();
 
     //methods:
 
-    public static void main(String[] args) {
-        // Instance of this class
-        CarController cc = new CarController("CarView 1.0");
 
-        cc.cars.add(new Volvo240());
-        cc.cars.add(new Saab95());
-        cc.cars.add(new Scania());
-
-        // Start a new view and send a reference of self
-        cc.frame = new CarView("CarSim 1.0", cc);
-
-        // Start the timer
-        cc.timer.start();
-    }
 
     // We link the buttons to actions in the constructor.
-    public CarController(String title){
+    public CarController(String title, Frame frame, ArrayList<Vehicle> cars){
+        this.frame = frame;
+        this.cars = cars;
         initFrame(title);
         initButtons();
 
@@ -93,6 +80,7 @@ public class CarController  {
         this.setTitle(title);
         this.setPreferredSize(new Dimension(X, Y));
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        this.pack();
 
     }
 
@@ -137,6 +125,10 @@ public class CarController  {
         this.add(stopButton);
 
     }
+    /* CarApp needs to call the startTimer method to start timer. */
+    public void startTimer() {
+        this.timer.start();
+    }
 
     /* Each step the TimerListener moves all the cars in the list and tells the
      * view to update its images. Change this method to your needs.
@@ -154,8 +146,8 @@ public class CarController  {
                 }
                 car.move();
                 int x = (int) Math.round(car.getPosition().getX());
-                int y = (int) Math.round(car.getPosition().getY());
-                frame.drawPanel.moveImage(x, y, car.getModelName());
+                //int y = (int) Math.round(car.getPosition().getY());
+                frame.drawPanel.moveImage(x, car.getModelName());
                 //repaint() calls the paintComponent method of the panel
                 frame.drawPanel.repaint();
             }
