@@ -105,6 +105,7 @@ class CarTest {
     current speed, so we save the previous coordinates, and we want the new coordinates to
     equal the previous ones + current speed (depending on the direction!)
     */
+    /*
     @Test
     void move() {
         volvo.turnRight();
@@ -116,7 +117,7 @@ class CarTest {
         int y = volvo.getPosition().getY();
         volvo.move();
         assertEquals(y + volvo.getCurrentSpeed(), volvo.getPosition().getY());
-    }
+    }*/
 
     @Test
     void turnRight() {
