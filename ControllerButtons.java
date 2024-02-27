@@ -74,7 +74,7 @@ public class ControllerButtons extends JFrame implements HasButtons{
 
         startButton.addActionListener(e -> {
             for (CarObserver observer : observers) {
-                observer.notifyObservers("start");
+                observer.notifyObservers(Actions.START);
             }
         });
         stopButton.addActionListener(e -> {
@@ -84,36 +84,36 @@ public class ControllerButtons extends JFrame implements HasButtons{
         });
         gasButton.addActionListener(e -> {
             for (CarObserver observer : observers) {
-                observer.notifyObservers("gas");
+                observer.notifyObservers(Actions.GAS);
             }
         });
         brakeButton.addActionListener(e -> {
             for (CarObserver observer : observers) {
-                observer.notifyObservers("brake");
+                observer.notifyObservers(Actions.BRAKE);
             }
         });
 
         turboOnButton.addActionListener(e -> {
             for (CarObserver observer : observers) {
-                observer.notifyObservers("turboOn");
+                observer.notifyObservers(Actions.TURBOON);
             }
         });
 
         turboOffButton.addActionListener(e -> {
             for (CarObserver observer : observers) {
-                observer.notifyObservers("turboOff");
+                observer.notifyObservers(Actions.TURBOOFF);
             }
         });
 
         lowerBedButton.addActionListener(e -> {
             for (CarObserver observer : observers) {
-                observer.notifyObservers("lowerBed");
+                observer.notifyObservers(Actions.LOWER);
             }
         });
 
         liftBedButton.addActionListener(e -> {
             for (CarObserver observer : observers) {
-                observer.notifyObservers("liftBed");
+                observer.notifyObservers(Actions.LIFT);
             }
         });
 

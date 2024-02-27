@@ -46,32 +46,16 @@ public class CarController implements CarObserver   {
     }
 
     @Override
-    public void notifyObservers(String action) {
+    public void notifyObservers(Actions action) {
         switch (action) {
-            case "gas":
-                carManager.gas(cButtons.getGasAmount());
-                break;
-            case "brake":
-                carManager.brake(cButtons.getGasAmount());
-                break;
-            case "start":
-                carManager.startAllCars();
-                break;
-            case "stop":
-                carManager.stopAllCars();
-                break;
-            case "liftBed":
-                carManager.liftBedButton();
-                break;
-            case "lowerBed":
-                carManager.lowerBedButton();
-                break;
-            case "turboOff":
-                carManager.saabTurboOff();
-                break;
-            case "turboOn":
-                carManager.saabTurboOn();
-                break;
+            case GAS -> carManager.gas(cButtons.getGasAmount());
+            case BRAKE -> carManager.brake(cButtons.getGasAmount());
+            case START -> carManager.startAllCars();
+            case STOP -> carManager.stopAllCars();
+            case LIFT -> carManager.liftBedButton();
+            case LOWER -> carManager.lowerBedButton();
+            case TURBOOFF -> carManager.saabTurboOff();
+            case TURBOON -> carManager.saabTurboOn();
         }
     }
 
@@ -91,10 +75,8 @@ public class CarController implements CarObserver   {
                 }
                 car.move();
                 int x = car.getPosition().getX();
-                //int y = (int) Math.round(car.getPosition().getY());
-                frame.drawPanel.moveImage(x, car.getModelName());
-                //repaint() calls the paintComponent method of the panel
-                frame.drawPanel.repaint();
+                frame.moveFrame(x, car.getModelName());
+                frame.repaintFrame();
             }
         }
     }

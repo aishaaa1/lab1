@@ -1,3 +1,3 @@
 public interface CarObserver {
-    void notifyObservers(String action);
+    void notifyObservers(Actions action);
 }
