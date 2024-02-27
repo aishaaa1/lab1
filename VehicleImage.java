@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class VehicleImage {
     private final BufferedImage image;
-    public Vehicle vehicle;
+    private Vehicle vehicle;
     private final Point point;
 
     public VehicleImage(Vehicle vehicle, Point point)  {
@@ -19,9 +19,8 @@ public class VehicleImage {
         }
 
     }
-    public void moveImage(int x, int y) {
-        point.x += x;
-        point.y += y;
+    public void moveImage(int x) {
+        point.x = x;
     }
     protected void drawImage(Graphics g) {
         g.drawImage(image, point.x, point.y, null);

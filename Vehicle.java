@@ -148,4 +148,6 @@ public abstract class Vehicle implements Movable {
 
     public void setDirection(Direction direction) {
     }
+
+
 }

@@ -2,8 +2,8 @@ import java.awt.*;
 
 public class Scania extends Vehicle implements MoveFlake {
     private final Flake flake;
-    public Scania(int nrDoors, Color color, double enginePower, String modelName) {
-        super(nrDoors, color, enginePower, modelName);
+    public Scania() {
+        super(2, Color.black, 270, "Scania");
         this.flake = new Flake(0);
     }
 

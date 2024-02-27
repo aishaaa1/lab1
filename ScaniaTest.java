@@ -10,7 +10,7 @@ class ScaniaTest {
 
     @BeforeEach
     void setUp() {
-        car = new Scania(2, Color.cyan, 234, "Scania");
+        car = new Scania();
     }
 
     @Test
