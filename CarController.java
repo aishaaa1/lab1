@@ -29,12 +29,14 @@ public class CarController implements CarObserver   {
     private final ArrayList<Vehicle> cars;
 
 
-    public CarController( Frame frame, ArrayList<Vehicle> cars){
-        this.frame = frame;
+    public CarController(ArrayList<Vehicle> cars, Frame frame){
         this.cars = cars;
         this.carManager = new CarManager(cars);
         this.cButtons = new ControllerButtons();
+        this.frame = frame;
+
         cButtons.addObserver(this);
+
     }
 
 

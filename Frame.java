@@ -5,17 +5,19 @@ public class Frame {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
     JFrame frame = new JFrame();
-
+    ControllerButtons cButtons;
 
     DrawPanel drawPanel = new DrawPanel(WIDTH, HEIGHT - 240);
     public Frame(String title) {
+        //this.cButtons = cButtons;
         initComponents(title);
     }
     void initComponents(String title) {
+
         frame.setTitle(title);
         frame.setSize(new Dimension());
         frame.add(drawPanel, BorderLayout.NORTH);
-        //frame.add(carView, BorderLayout.WEST);
+        //frame.add(cButtons, BorderLayout.WEST);
         frame.setVisible(true);
         frame.pack();
         // Get the computer screen resolution
