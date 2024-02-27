@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,7 +9,7 @@ class ScaniaTest {
 
     @BeforeEach
     void setUp() {
-        car = new Scania(2, Color.cyan, 234, "Scania");
+        car = new Scania();
     }
 
     @Test

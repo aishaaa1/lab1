@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CarApp {
@@ -11,7 +10,8 @@ public class CarApp {
         cars.add(new Saab95());
         cars.add(new Scania());
         Frame frame = new Frame("CarSim 1.0");
-        CarController cc = new CarController("CarView 1.0", frame, cars);
+
+        CarController cc = new CarController(frame, cars);
         // Start the timer
         cc.startTimer();
     }

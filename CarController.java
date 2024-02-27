@@ -1,7 +1,4 @@
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -13,121 +10,67 @@ import java.util.ArrayList;
 * modifying the model state and the updating the view.
  */
 
-public class CarController extends JFrame implements ActionButtons, HasButtons   {
+public class CarController implements CarObserver   {
     // member fields:
 
     // The delay (ms) corresponds to 20 updates a sec (hz)
 
-    JPanel gasPanel = new JPanel();
-    JPanel controlPanel = new JPanel();
-    JLabel gasLabel = new JLabel();
-
-    //Buttons
-    JButton gasButton = new JButton("Gas");
-    JButton brakeButton = new JButton("Brake");
-    JButton turboOnButton = new JButton("Saab Turbo on");
-    JButton turboOffButton = new JButton("Saab Turbo off");
-    JButton liftBedButton = new JButton("Scania Lift Bed");
-    JButton lowerBedButton = new JButton("Lower Lift Bed");
-    JButton startButton = new JButton("Start all cars");
-    JButton stopButton = new JButton("Stop all cars");
-
-    JSpinner gasSpinner;
-    int gasAmount=0;
-
-    private static final int X = 800;
-    private static final int Y = 240;
-    private Frame frame;
+    private final CarManager carManager;
+    private final ControllerButtons cButtons;
+    private final Frame frame;
     private final int delay = 50;
     // The timer is started with a listener (see below) that executes the statements
     // each step between delays.
-    private Timer timer = new Timer(delay, new TimerListener());
+    private final Timer timer = new Timer(delay, new TimerListener());
 
 
     // The frame that represents this instance View of the MVC patter
     // A list of cars, modify if needed
-    private ArrayList<Vehicle> cars = new ArrayList<>();
-
-    //methods:
+    private final ArrayList<Vehicle> cars;
 
 
-
-    // We link the buttons to actions in the constructor.
-    public CarController(String title, Frame frame, ArrayList<Vehicle> cars){
+    public CarController( Frame frame, ArrayList<Vehicle> cars){
         this.frame = frame;
         this.cars = cars;
-        initFrame(title);
-        initButtons();
-
-        addActionListenerWithFunction(startButton, () -> startAllCars());
-        addActionListenerWithFunction(stopButton,()-> stopAllCars());
-        addActionListenerWithFunction(gasButton, () -> gas(gasAmount));
-        addActionListenerWithFunction(brakeButton, () -> brake(gasAmount));
-        addActionListenerWithFunction(turboOnButton, () -> saabTurboOn());
-        addActionListenerWithFunction(turboOffButton, () -> saabTurboOff());
-        addActionListenerWithFunction(lowerBedButton, () -> lowerBedButton());
-        addActionListenerWithFunction(liftBedButton, () -> liftBedButton());
-
-        gasSpinner.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                gasAmount = (int) ((JSpinner)e.getSource()).getValue();
-            }
-        });
-
-        setVisible(true);
-    }
-    void initFrame(String title) {
-        this.setTitle(title);
-        this.setPreferredSize(new Dimension(X, Y));
-        this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        this.pack();
-
+        this.carManager = new CarManager(cars);
+        this.cButtons = new ControllerButtons();
+        cButtons.addObserver(this);
     }
 
-    void initButtons() {
 
-        SpinnerModel spinnerModel =
-                new SpinnerNumberModel(0, //initial value
-                        0, //min
-                        100, //max
-                        1);//step
-        gasSpinner = new JSpinner(spinnerModel);
-        gasPanel.setLayout(new BorderLayout());
-
-        gasPanel.add(gasLabel, BorderLayout.PAGE_START);
-        gasPanel.add(gasSpinner, BorderLayout.PAGE_END);
-
-        this.add(gasPanel);
-
-        controlPanel.setLayout(new GridLayout(2,4));
-
-        controlPanel.add(gasButton, 0);
-        controlPanel.add(turboOnButton, 1);
-        controlPanel.add(liftBedButton, 2);
-        controlPanel.add(brakeButton, 3);
-        controlPanel.add(turboOffButton, 4);
-        controlPanel.add(lowerBedButton, 5);
-
-        controlPanel.setPreferredSize(new Dimension((X/2)+4, 200));
-        this.add(controlPanel, BorderLayout.EAST);
-        controlPanel.setBackground(Color.CYAN);
-
-
-        startButton.setBackground(Color.blue);
-        startButton.setForeground(Color.green);
-        startButton.setPreferredSize(new Dimension(X/5-15,200));
-        this.add(startButton);
-
-
-        stopButton.setBackground(Color.red);
-        stopButton.setForeground(Color.black);
-        stopButton.setPreferredSize(new Dimension(X/5-15,200));
-        this.add(stopButton);
-
-    }
     /* CarApp needs to call the startTimer method to start timer. */
     public void startTimer() {
         this.timer.start();
+    }
+
+    @Override
+    public void notifyObservers(String action) {
+        switch (action) {
+            case "gas":
+                carManager.gas(cButtons.getGasAmount());
+                break;
+            case "brake":
+                carManager.brake(cButtons.getGasAmount());
+                break;
+            case "start":
+                carManager.startAllCars();
+                break;
+            case "stop":
+                carManager.stopAllCars();
+                break;
+            case "liftBed":
+                carManager.liftBedButton();
+                break;
+            case "lowerBed":
+                carManager.lowerBedButton();
+                break;
+            case "turboOff":
+                carManager.saabTurboOff();
+                break;
+            case "turboOn":
+                carManager.saabTurboOn();
+                break;
+        }
     }
 
     /* Each step the TimerListener moves all the cars in the list and tells the
@@ -145,7 +88,7 @@ public class CarController extends JFrame implements ActionButtons, HasButtons  
                     }
                 }
                 car.move();
-                int x = (int) Math.round(car.getPosition().getX());
+                int x = car.getPosition().getX();
                 //int y = (int) Math.round(car.getPosition().getY());
                 frame.drawPanel.moveImage(x, car.getModelName());
                 //repaint() calls the paintComponent method of the panel
@@ -168,70 +111,5 @@ public class CarController extends JFrame implements ActionButtons, HasButtons  
         return leftScreen || rightScreen;
     }
 
-    // Calls the gas method for each car once
-    public void gas(int amount) {
-        double gas = ((double) amount) / 100;
-        for (Vehicle car : cars) {
-            car.gas(gas);
-        }
-    }
 
-
-    public void brake(int amount) {
-        double brake = ((double) amount) / 100;
-        for (Vehicle car : cars){
-            car.brake(brake);
-        }
-    }
-
-    public void saabTurboOn() {
-        for (Vehicle v : cars) {
-            if (v instanceof hasTurbo) {
-                ((Saab95) v).setTurboOn();
-            }
-        }
-    }
-
-    public void saabTurboOff() {
-        for (Vehicle v : cars) {
-            if (v instanceof hasTurbo) {
-                ((Saab95) v).setTurboOff();
-            }
-        }
-    }
-    public void liftBedButton(){
-        for (Vehicle v : cars){
-            if(v instanceof MoveFlake){
-                ((Scania)v).raise();
-            }
-        }
-
-    }
-    public void lowerBedButton(){
-        for(Vehicle v: cars){
-            if(v instanceof MoveFlake){
-                ((Scania) v).lower();
-            }
-        }
-    }
-    public void startAllCars() {
-        for (Vehicle v : cars) {
-            v.startEngine();
-        }
-    }
-    public void stopAllCars() {
-        for (Vehicle v : cars) {
-            v.stopEngine();
-        }
-    }
-
-    // Action Listeners
-    public static void addActionListenerWithFunction(AbstractButton button, Runnable func) {
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                func.run();
-            }
-        });
-    }
 }
