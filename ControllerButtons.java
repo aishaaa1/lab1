@@ -79,7 +79,7 @@ public class ControllerButtons extends JFrame implements HasButtons{
         });
         stopButton.addActionListener(e -> {
             for (CarObserver observer : observers) {
-                observer.notifyObservers("stop");
+                observer.notifyObservers(Actions.STOP);
             }
         });
         gasButton.addActionListener(e -> {

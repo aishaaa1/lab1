@@ -5,18 +5,16 @@ import java.io.File;
 import java.io.IOException;
 
 public class VehicleImage {
+    public static ImageFactory factory = new ImageFactory();
     private final BufferedImage image;
-    private Vehicle vehicle;
+    private final Vehicle vehicle;
     private final Point point;
+
 
     public VehicleImage(Vehicle vehicle, Point point)  {
         this.vehicle = vehicle;
         this.point = point;
-        try {
-            this.image = ImageIO.read(new File("pics/" + this.vehicle.getModelName() + ".jpg"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.image = factory.createImage("pics/" + this.vehicle.getModelName() + ".jpg");
 
     }
     public void moveImage(int x) {
@@ -29,18 +27,6 @@ public class VehicleImage {
     public int getImageWidth() { return image.getWidth();}
 
     public int getX() {return point.x;}
-    public String getModelName() {return vehicle.getModelName();}
 
-    /*
-    Could be useful for later
-     */
-    public int getImageHeight() {
-        return image.getHeight();
-    }
-    public void setPosition(Point point) {
-        this.point.x = point.x;
-        this.point.y = point.y;
-    }
-
-
+    public boolean isSameModelName(String modelName) {return vehicle.getModelName().equals(modelName);}
 }

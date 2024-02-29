@@ -1,13 +1,14 @@
 import javax.swing.*;
+import javax.swing.Action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
 /*
-* This class represents the Controller part in the MVC pattern.
-* It's responsibilities is to listen to the View and responds in a appropriate manner by
-* modifying the model state and the updating the view.
+ * This class represents the Controller part in the MVC pattern.
+ * It's responsibilities is to listen to the View and responds in a appropriate manner by
+ * modifying the model state and the updating the view.
  */
 
 public class CarController implements CarObserver   {
@@ -29,12 +30,11 @@ public class CarController implements CarObserver   {
     private final ArrayList<Vehicle> cars;
 
 
-    public CarController(ArrayList<Vehicle> cars, Frame frame){
+    public CarController (Frame frame, ArrayList<Vehicle> cars){
+        this.frame = frame;
         this.cars = cars;
         this.carManager = new CarManager(cars);
         this.cButtons = new ControllerButtons();
-        this.frame = frame;
-
         cButtons.addObserver(this);
 
     }
@@ -59,6 +59,7 @@ public class CarController implements CarObserver   {
         }
     }
 
+
     /* Each step the TimerListener moves all the cars in the list and tells the
      * view to update its images. Change this method to your needs.
      * */
@@ -77,6 +78,7 @@ public class CarController implements CarObserver   {
                 int x = car.getPosition().getX();
                 frame.moveFrame(x, car.getModelName());
                 frame.repaintFrame();
+
             }
         }
     }
