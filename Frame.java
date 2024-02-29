@@ -5,8 +5,6 @@ public class Frame {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
     JFrame frame = new JFrame();
-
-    CarView carView = new CarView(WIDTH, HEIGHT);
     DrawPanel drawPanel = new DrawPanel(WIDTH, HEIGHT - 240);
     public Frame(String title) {
         initComponents(title);
@@ -25,7 +23,6 @@ public class Frame {
     void repaintFrame() {
         drawPanel.repaint();
     }
-
     public int getWidth() {
         return WIDTH;
     }
