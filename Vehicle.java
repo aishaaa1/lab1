@@ -1,6 +1,7 @@
 import java.awt.*;
+import java.util.ArrayList;
 
-public abstract class Vehicle implements Movable {
+public abstract class Vehicle implements Movable,IModelObservable {
     private static final Direction[] dirs = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     protected Position position;
     public Direction direction;
@@ -18,10 +19,10 @@ public abstract class Vehicle implements Movable {
         this.direction = Direction.EAST; // This was always null therefore I added a default direction
         stopEngine();
     }
-    protected Position getPosition() {
+    public Position getPosition() {
         return this.position;
     }
-    protected String getModelName(){return this.modelName;} // Get model name was not defined here
+    public String getModelName(){return this.modelName;} // Get model name was not defined here
     protected Direction getDirection() { return this.direction; }
     protected void currentSpeed(double currentSpeed) {
         if (this.currentSpeed < 0) {
@@ -149,5 +150,18 @@ public abstract class Vehicle implements Movable {
     public void setDirection(Direction direction) {
     }
 
+    ArrayList <IModelObserver> observers;
+    public void add(IModelObserver observer){
+        observers.add(observer);
+    }
+    public void remove (IModelObserver observer){
+        observers.remove(observer);
+
+    }
+    public void notifyObserevers(){
+        for (IModelObserver observer : observers){
+            observer.update(this);
+        }
+    }
 
 }

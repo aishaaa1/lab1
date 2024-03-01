@@ -34,6 +34,26 @@ public class Scania extends Vehicle implements MoveFlake {
     }
 
     @Override
+    public void add(IModelObserver observer) {
+
+    }
+
+    @Override
+    public void remove(IModelObserver observer) {
+
+    }
+
+    @Override
+    public void notifyObserevers() {
+
+    }
+
+    @Override
+    public int getLocation() {
+        return 0;
+    }
+
+    @Override
     public String getModelName() {
         return "Scania";
     }

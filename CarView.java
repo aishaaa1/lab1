@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
  * TODO: Write more actionListeners and wire the rest of the buttons
  **/
 
-public class CarView extends JFrame{
+public class CarView extends JFrame {
     private static final int X = 800;
     private static final int Y = 800;
 
@@ -107,58 +107,15 @@ public class CarView extends JFrame{
 
         // This actionListener is for the gas button only
         // TODO: Create more for each component as necessary
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.startAllCars();
-            }
-        });
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.stopAllCars();
-            }
-        });
-        gasButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.gas(gasAmount);
-            }
-        });
-        brakeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.brake(gasAmount);
-            }
-        });
+        addActionListenerWithFunction(startButton,()-> carC.takeAction(Actions.START));
+        addActionListenerWithFunction(stopButton,()-> carC.takeAction(Actions.STOP));
+        addActionListenerWithFunction(gasButton,()-> carC.takeAction(Actions.GAS));
+        addActionListenerWithFunction(brakeButton,()-> carC.takeAction(Actions.BRAKE));
+        addActionListenerWithFunction(turboOnButton,()-> carC.takeAction(Actions.TURBOON));
+        addActionListenerWithFunction(turboOffButton,()-> carC.takeAction(Actions.TURBOOFF));
+        addActionListenerWithFunction(lowerBedButton,()-> carC.takeAction(Actions.LOWER));
+        addActionListenerWithFunction(liftBedButton,()-> carC.takeAction(Actions.LIFT));
 
-        turboOnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               carC.saabTurboOn();
-            }
-        });
-
-        turboOffButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.saabTurboOff();
-            }
-        });
-
-        lowerBedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.lowerBedButton();
-            }
-        });
-
-        liftBedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                carC.liftBedButton();
-            }
-        });
         // Make the frame pack all it's components by respecting the sizes if possible.
         this.pack();
 
@@ -174,5 +131,14 @@ public class CarView extends JFrame{
 
     boolean notWithinBounds () {
         return true;
+    }
+
+    public static void addActionListenerWithFunction(AbstractButton button, Runnable func) {
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                func.run();
+            }
+        });
     }
 }

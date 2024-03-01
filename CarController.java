@@ -11,14 +11,14 @@ import java.util.ArrayList;
 * modifying the model state and the updating the view.
  */
 
-public class CarController implements CarObserver   {
+public class CarController implements IModelObserver,IControllerObservable   {
     // member fields:
 
     // The delay (ms) corresponds to 20 updates a sec (hz)
 
     private final CarManager carManager;
     private final ControllerButtons cButtons;
-    private final Frame frame;
+    //private final Frame frame;
     private final int delay = 50;
     // The timer is started with a listener (see below) that executes the statements
     // each step between delays.
@@ -31,11 +31,11 @@ public class CarController implements CarObserver   {
 
 
     public CarController (Frame frame, ArrayList<Vehicle> cars){
-        this.frame = frame;
+        // this.frame = frame;
         this.cars = cars;
         this.carManager = new CarManager(cars);
         this.cButtons = new ControllerButtons();
-        cButtons.addObserver(this);
+        //cButtons.addObserver(this);
 
     }
 
@@ -46,7 +46,31 @@ public class CarController implements CarObserver   {
     }
 
     @Override
-    public void notifyObservers(Actions action) {
+    public void update(IModelObservable car) {
+        this.notifyObserevers(car);
+    }
+    ArrayList <IControllerObserver> observers ;
+
+    @Override
+    public void add(IControllerObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void remove(IControllerObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObserevers(IModelObservable car) {
+        for(IControllerObserver observer : observers){
+            observer.update(car);
+        }
+
+    }
+
+
+    public void takeAction(Actions action) {
         switch (action) {
             case Actions.GAS:
                 carManager.gas(cButtons.getGasAmount());
@@ -93,8 +117,8 @@ public class CarController implements CarObserver   {
                 }
                 car.move();
                 int x = car.getPosition().getX();
-                frame.moveFrame(x, car.getModelName());
-                frame.repaintFrame();
+                // frame.moveFrame(x, car.getModelName());
+                // frame.repaintFrame();
 
             }
         }
@@ -110,6 +134,7 @@ public class CarController implements CarObserver   {
 
     public boolean notWithinBounds(Position p, Direction dir, Vehicle v){
         boolean leftScreen = 0 > p.getX() && Direction.WEST == dir;
+        CarView frame = null;
         boolean rightScreen = frame.getWidth() < p.getX() + frame.drawPanel.getVehicleWidth(v.getModelName()) && Direction.EAST == dir;
         return leftScreen || rightScreen;
     }

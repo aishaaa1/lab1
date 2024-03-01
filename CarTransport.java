@@ -10,7 +10,6 @@ public class CarTransport extends Vehicle implements MoveFlake  {
         this.transport = new ArrayDeque<>();
         this.ramp = new Ramp(MODE.UP);
     }
-
     public Deque<Vehicle> getTransport() {return transport;}
     public Ramp getRamp() {return ramp;}
     @Override
@@ -42,8 +41,5 @@ public class CarTransport extends Vehicle implements MoveFlake  {
                 && Math.abs(this.position.getY() - 2) >= Math.abs(car.position.getY());
     }
 
-    @Override
-    public String getModelName() {
-        return null;
-    }
+
 }
