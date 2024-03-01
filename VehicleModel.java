@@ -1,10 +1,15 @@
 import java.util.ArrayList;
+import java.util.List;
 
-public class VehicleModel implements  ActionButtons {
-    private final ArrayList<Vehicle> cars;
+public class VehicleModel implements  ActionButtons, Manager {
+
+    public final static VehicleFactory factory = new VehicleFactory();
+    private final static VehicleImageFactory imageFactory = new VehicleImageFactory();
+    private final List<Vehicle> cars;
     //need VehicleImages to remove add car maybe
     //private final ArrayList<VehicleImage> vehicleImages;
-    private final ArrayList<CarObserver> observers = new ArrayList<>();
+    private final List<CarObserver> observers = new ArrayList<>();
+    private final ArrayList<CarManagementObserver> managementObservers = new ArrayList<>();
 
     public VehicleModel(ArrayList<Vehicle> cars) {
         this.cars = cars;
@@ -12,21 +17,7 @@ public class VehicleModel implements  ActionButtons {
     }
 
 
-    public void addObservers(CarObserver ob){
-        observers.add(ob);
 
-    }
-    void notifyObservers(String car, int x){
-        for (CarObserver ob : observers){
-            ob.update(car, x);
-        }
-    }
-
-    void newState(){
-        for (Vehicle car : cars){
-            notifyObservers(car.getModelName(), car.getPosition().getX());
-        }
-    }
     public void reverseVehicle(Vehicle car){
         car.stopEngine();
         car.turnLeft();
@@ -122,4 +113,56 @@ public class VehicleModel implements  ActionButtons {
             v.stopEngine();
         }
     }
+
+    @Override
+    public void addVehicle(){
+        if(cars.size() < 6) {
+            Vehicle v = factory.createRandVehicle();
+            cars.add(v);
+            int positionY = (cars.size() - 1) * 100;
+            notifyCarAdded(imageFactory.createImage(v, 0, positionY));
+        }
+
+    }
+    @Override
+    public void removeVehicle(){
+        if(cars.size() - 1 > 1) {
+            cars.removeLast();
+        } else if (cars.size() == 1) {
+            cars.removeFirst();
+        }
+        notifyCarRemoved();
+    }
+
+    public void addObservers(CarObserver ob){
+        observers.add(ob);
+
+    }
+    void notifyObservers(String car, int x){
+        for (CarObserver ob : observers){
+            ob.updateVehicle(car, x);
+        }
+    }
+
+    void newState(){
+        for (Vehicle car : cars){
+            notifyObservers(car.getModelName(), car.getPosition().getX());
+        }
+    }
+
+    public void addManagementObserver(CarManagementObserver ob){
+        managementObservers.add(ob);
+    }
+    public void notifyCarAdded(VehicleImage vehicleImage){
+        for (CarManagementObserver ob : managementObservers){
+            ob.actOnCarAdded(vehicleImage);
+        }
+    }
+
+    public void notifyCarRemoved(){
+        for (CarManagementObserver ob : managementObservers){
+            ob.actOnCarRemoved();
+        }
+    }
+
 }

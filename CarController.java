@@ -77,20 +77,20 @@ public class CarController extends JPanel implements HasButtons{
         controlPanel.add(turboOffButton, 4);
         controlPanel.add(lowerBedButton, 5);
 
-        controlPanel.setPreferredSize(new Dimension((X/2)+4, 200));
+        controlPanel.setPreferredSize(new Dimension((X/2), 200));
         this.add(controlPanel, BorderLayout.EAST);
         controlPanel.setBackground(Color.CYAN);
 
 
         startButton.setBackground(Color.blue);
         startButton.setForeground(Color.green);
-        startButton.setPreferredSize(new Dimension(X/5-15,200));
+        startButton.setPreferredSize(new Dimension(X/6-20,200));
         this.add(startButton);
 
 
         stopButton.setBackground(Color.red);
         stopButton.setForeground(Color.black);
-        stopButton.setPreferredSize(new Dimension(X/5-15,200));
+        stopButton.setPreferredSize(new Dimension(X/6-20,200));
         this.add(stopButton);
 
         startButton.addActionListener(e -> cars.startAllCars());

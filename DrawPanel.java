@@ -4,6 +4,7 @@ import java.awt.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 // This panel represents the animated part of the view with the car images.
 public class  DrawPanel extends JPanel{
@@ -11,11 +12,11 @@ public class  DrawPanel extends JPanel{
     Creates the images needed
      */
     public final static WorkShopFactory workShopFactory = new WorkShopFactory();
-    private final Collection<VehicleImage> vehicleImages;
+    private final List<VehicleImage> vehicleImages;
     private final Collection<WorkShop> workShopImages = new ArrayList<>();
 
     // Initializes the panel and reads the images
-    public DrawPanel(int x, int y, Collection<VehicleImage> vehicleImages) {
+    public DrawPanel(int x, int y, List<VehicleImage> vehicleImages) {
         this.setDoubleBuffered(true);
         this.setPreferredSize(new Dimension(x, y));
         this.setBackground(Color.yellow);
@@ -34,6 +35,16 @@ public class  DrawPanel extends JPanel{
             }
         }
         repaint();
+    }
+
+    void addImage(VehicleImage vehicleImage){
+        vehicleImages.add(vehicleImage);
+
+        repaint();
+    }
+
+    void removeImage(){
+        vehicleImages.removeLast();
     }
 
     @Override

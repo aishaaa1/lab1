@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 public class CarApp  {
@@ -14,7 +15,7 @@ public class CarApp  {
         cars.add(factory.createSaab());
         cars.add(factory.createScania());
 
-        Collection<VehicleImage> vehicleImages = new ArrayList<>();
+        List<VehicleImage> vehicleImages = new ArrayList<>();
         vehicleImages.add(imageFactory.createVolvoImage(0,0));
         vehicleImages.add(imageFactory.createSaabImage(0, 100));
         vehicleImages.add(imageFactory.createScaniaImage(0, 200));
@@ -24,9 +25,13 @@ public class CarApp  {
 
         //Model changes -> View updates
         model.addObservers(frame);
+        model.addManagementObserver(frame);
 
         CarController cc = new CarController(model);
-        CompositePanel panel = new CompositePanel(cc, frame.drawPanel);
+        CarManagementPanel cm = new CarManagementPanel(new CarManagementController(model));
+
+
+        CompositePanel panel = new CompositePanel(cc, cm, frame.drawPanel);
         frame.add(panel);
         frame.pack();
 
