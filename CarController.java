@@ -1,8 +1,9 @@
 import javax.swing.*;
-import javax.swing.Action;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
 
 
 /*
@@ -11,14 +12,18 @@ import java.util.ArrayList;
  * modifying the model state and the updating the view.
  */
 
-public class CarController implements CarObserver   {
+public class CarController extends JPanel implements HasButtons{
     // member fields:
 
     // The delay (ms) corresponds to 20 updates a sec (hz)
-
-    private final CarManager carManager;
-    private final ControllerButtons cButtons;
-    private final Frame frame;
+    private final VehicleModel cars;
+    JPanel gasPanel = new JPanel();
+    JPanel controlPanel = new JPanel();
+    JLabel gasLabel = new JLabel();
+    JSpinner gasSpinner;
+    private int gasAmount = 0;
+    private static final int X = 800;
+    //private static final int Y = 240;
     private final int delay = 50;
     // The timer is started with a listener (see below) that executes the statements
     // each step between delays.
@@ -26,76 +31,86 @@ public class CarController implements CarObserver   {
 
 
     // The frame that represents this instance View of the MVC patter
-    // A list of cars, modify if needed
-    private final ArrayList<Vehicle> cars;
 
-
-    public CarController (Frame frame, ArrayList<Vehicle> cars){
-        this.frame = frame;
+    public CarController (VehicleModel cars){
         this.cars = cars;
-        this.carManager = new CarManager(cars);
-        this.cButtons = new ControllerButtons();
-        cButtons.addObserver(this);
-
+        initComponents();
     }
-
 
     /* CarApp needs to call the startTimer method to start timer. */
     public void startTimer() {
         this.timer.start();
     }
 
-    @Override
-    public void notifyObservers(Actions action) {
-        switch (action) {
-            case GAS -> carManager.gas(cButtons.getGasAmount());
-            case BRAKE -> carManager.brake(cButtons.getGasAmount());
-            case START -> carManager.startAllCars();
-            case STOP -> carManager.stopAllCars();
-            case LIFT -> carManager.liftBedButton();
-            case LOWER -> carManager.lowerBedButton();
-            case TURBOOFF -> carManager.saabTurboOff();
-            case TURBOON -> carManager.saabTurboOn();
-        }
-    }
-
-
     /* Each step the TimerListener moves all the cars in the list and tells the
      * view to update its images. Change this method to your needs.
      * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            for (Vehicle car : cars) {
-                if(notWithinBounds(car.getPosition(), car.getDirection(), car)) {
-                    if (car instanceof Volvo240) {
-                        car.stopEngine();
-                    }
-                    else {
-                        reverseVehicle(car);
-                    }
-                }
-                car.move();
-                int x = car.getPosition().getX();
-                frame.moveFrame(x, car.getModelName());
-                frame.repaintFrame();
-
-            }
+                cars.moveCars();
         }
     }
 
-    public void reverseVehicle(Vehicle car){
-        car.stopEngine();
-        car.turnLeft();
-        car.turnLeft();
-        car.startEngine();
-        car.gas(0.5);
+    void initComponents() {
+
+        SpinnerModel spinnerModel =
+                new SpinnerNumberModel(0, //initial value
+                        0, //min
+                        100, //max
+                        1);//step
+        gasSpinner = new JSpinner(spinnerModel);
+        gasSpinner.addChangeListener(e -> gasAmount = (int) ((JSpinner)e.getSource()).getValue());
+
+        gasPanel.setLayout(new BorderLayout());
+
+        gasPanel.add(gasLabel, BorderLayout.PAGE_START);
+        gasPanel.add(gasSpinner, BorderLayout.PAGE_END);
+
+        this.add(gasPanel);
+
+        controlPanel.setLayout(new GridLayout(2,4));
+
+        controlPanel.add(gasButton, 0);
+        controlPanel.add(turboOnButton, 1);
+        controlPanel.add(liftBedButton, 2);
+        controlPanel.add(brakeButton, 3);
+        controlPanel.add(turboOffButton, 4);
+        controlPanel.add(lowerBedButton, 5);
+
+        controlPanel.setPreferredSize(new Dimension((X/2)+4, 200));
+        this.add(controlPanel, BorderLayout.EAST);
+        controlPanel.setBackground(Color.CYAN);
+
+
+        startButton.setBackground(Color.blue);
+        startButton.setForeground(Color.green);
+        startButton.setPreferredSize(new Dimension(X/5-15,200));
+        this.add(startButton);
+
+
+        stopButton.setBackground(Color.red);
+        stopButton.setForeground(Color.black);
+        stopButton.setPreferredSize(new Dimension(X/5-15,200));
+        this.add(stopButton);
+
+        startButton.addActionListener(e -> cars.startAllCars());
+
+        stopButton.addActionListener(e -> cars.stopAllCars());
+
+        gasButton.addActionListener(e -> cars.gas(gasAmount));
+
+        brakeButton.addActionListener(e -> cars.brake(gasAmount));
+
+        turboOnButton.addActionListener(e -> cars.saabTurboOn());
+
+        turboOffButton.addActionListener(e -> cars.saabTurboOff());
+
+        lowerBedButton.addActionListener(e -> cars.lowerBedButton());
+
+        liftBedButton.addActionListener(e -> cars.liftBedButton());
+
     }
 
-    public boolean notWithinBounds(Position p, Direction dir, Vehicle v){
-        boolean leftScreen = 0 > p.getX() && Direction.WEST == dir;
-        boolean rightScreen = frame.getWidth() < p.getX() + frame.drawPanel.getVehicleWidth(v.getModelName()) && Direction.EAST == dir;
-        return leftScreen || rightScreen;
-    }
 
 
 }
