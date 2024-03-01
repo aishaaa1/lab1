@@ -11,11 +11,6 @@ public class VehicleModel implements  ActionButtons, Manager {
     private final List<CarObserver> observers = new ArrayList<>();
     private final ArrayList<CarManagementObserver> managementObservers = new ArrayList<>();
 
-    public VehicleModel(ArrayList<Vehicle> cars) {
-        this.cars = cars;
-        //this.vehicleImages = vehicleImages;
-    }
-
 
 
     public void reverseVehicle(Vehicle car){
@@ -128,7 +123,8 @@ public class VehicleModel implements  ActionButtons, Manager {
     public void removeVehicle(){
         if(cars.size() - 1 > 1) {
             cars.removeLast();
-        } else if (cars.size() == 1) {
+        }
+        else if (cars.size() == 1) {
             cars.removeFirst();
         }
         notifyCarRemoved();

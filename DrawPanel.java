@@ -12,15 +12,15 @@ public class  DrawPanel extends JPanel{
     Creates the images needed
      */
     public final static WorkShopFactory workShopFactory = new WorkShopFactory();
-    private final List<VehicleImage> vehicleImages;
+    private final List<VehicleImage> vehicleImages = new ArrayList<>();
     private final Collection<WorkShop> workShopImages = new ArrayList<>();
 
     // Initializes the panel and reads the images
-    public DrawPanel(int x, int y, List<VehicleImage> vehicleImages) {
+    public DrawPanel(int x, int y) {
         this.setDoubleBuffered(true);
         this.setPreferredSize(new Dimension(x, y));
         this.setBackground(Color.yellow);
-        this.vehicleImages = vehicleImages;
+        //this.vehicleImages = vehicleImages;
 
         workShopImages.add(workShopFactory.createVolvoShop(700, 0));
     }
@@ -31,7 +31,7 @@ public class  DrawPanel extends JPanel{
         for (VehicleImage vehicleImage : vehicleImages) {
             if (vehicleImage.isSameModelName(modelName)){
                 vehicleImage.moveImage(x);
-                break;
+
             }
         }
         repaint();

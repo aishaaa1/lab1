@@ -22,7 +22,7 @@ public class CarManagementPanel extends JPanel {
         JButton addButton = new JButton("Add");
         JButton removeButton = new JButton("Remove");
 
-        controlPanel.setPreferredSize(new Dimension(100, 200));
+        controlPanel.setPreferredSize(new Dimension(85, 200));
         this.add(controlPanel, BorderLayout.WEST);
         controlPanel.setBackground(Color.BLUE);
 

@@ -3,5 +3,4 @@ public interface Movable {
     void turnRight();
     void turnLeft();
 
-
 }
