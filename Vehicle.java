@@ -1,7 +1,12 @@
 import java.awt.*;
 
 public abstract class Vehicle implements Movable {
-    private static final Direction[] dirs = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+    protected enum Direction {
+        NORTH, EAST, SOUTH, WEST;
+        private static final Direction[] dirs = values();
+        public Direction turnLeft() {return dirs[(this.ordinal() + 1) % dirs.length];}
+        public Direction turnRight() {return dirs[(this.ordinal() - 1) % dirs.length];}
+    }
     protected Position position;
     public Direction direction;
     private final int nrDoors;
@@ -9,6 +14,7 @@ public abstract class Vehicle implements Movable {
     public double currentSpeed;
     private Color color;
     public String modelName;
+
     public Vehicle(int nrDoors, Color color, double enginePower, String modelName) {
         this.nrDoors = nrDoors;
         this.color = color;
@@ -95,57 +101,28 @@ public abstract class Vehicle implements Movable {
     @Override
     public void move() {
         int x = position.getX();
-        int y = position.getY();
-        int x1 = x;
-        int y1 = y;
-        //startEngine(); // If we call this we reset the speed of the vehicle to 0.1 which is not good
         if (direction == Direction.EAST) {
-            x1 += (int) getCurrentSpeed();
+            x += (int) currentSpeed;
         }
         if (direction == Direction.WEST) {
-            x1 -= (int) getCurrentSpeed();
+            x -= (int) currentSpeed;
         }
-        if (direction == Direction.NORTH) {
-            y1 += (int) getCurrentSpeed();
-        }
-        if (direction == Direction.SOUTH) {
-            y1 -= (int) getCurrentSpeed();
-        }
-        int amount = (int) Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
-        /*gas(amount);  We do not need to change the gas value in the move
-        stopEngine();*/  // This is again not useful because we stop the car everytime the move function is called
-        position = new Position(x1, y1);
+        setPosition(x, position.getY());
     }
+
     @Override
     public void turnLeft() {
-        direction = getNext(direction, -1);
+        direction = direction.turnLeft();
     }
     @Override
     public void turnRight() {
-        direction = getNext(direction, 1);
+        direction = direction.turnRight();
     }
-    private static Direction getNext (Direction dir, int j) {
-        int index = 0;
-        for (int i = 0; i < dirs.length; i++) {
-            if (dir == dirs[i]) {
-                index = i;
-            }
-        }
-        index = index + j;
-        if (index < 0) {
-            index = dirs.length - 1;
-        }
-        if (index > dirs.length - 1) {
-            index = 0;
-        }
-        int find = Math.max(0, Math.min(index, dirs.length - 1));
-        return dirs[find];
+    public boolean isWest() {
+        return direction == Direction.WEST;
     }
-    @Override
-    public String toString() {
-        return "The car is a " + this.modelName + " of " + this.getClass();
+    public boolean isEast() {
+        return direction == Direction.EAST;
     }
 
-    public void setDirection(Direction direction) {
-    }
 }

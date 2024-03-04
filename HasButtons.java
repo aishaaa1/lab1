@@ -11,4 +11,5 @@ public interface HasButtons {
     JButton startButton = new JButton("Start all cars");
     JButton stopButton = new JButton("Stop all cars");
 
+
 }

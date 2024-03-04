@@ -16,7 +16,9 @@ public class CarController extends JPanel implements HasButtons{
     // member fields:
 
     // The delay (ms) corresponds to 20 updates a sec (hz)
+
     private final VehicleModel cars;
+    private final WorkShopModel workShops;
     JPanel gasPanel = new JPanel();
     JPanel controlPanel = new JPanel();
     JLabel gasLabel = new JLabel();
@@ -32,8 +34,9 @@ public class CarController extends JPanel implements HasButtons{
 
     // The frame that represents this instance View of the MVC patter
 
-    public CarController (VehicleModel cars){
+    public CarController (VehicleModel cars, WorkShopModel workShops){
         this.cars = cars;
+        this.workShops = workShops;
         initComponents();
     }
 
@@ -47,11 +50,13 @@ public class CarController extends JPanel implements HasButtons{
      * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-                cars.moveCars();
+                cars.moveCars(X);
         }
     }
 
+
     void initComponents() {
+
 
         SpinnerModel spinnerModel =
                 new SpinnerNumberModel(0, //initial value
@@ -108,6 +113,8 @@ public class CarController extends JPanel implements HasButtons{
         lowerBedButton.addActionListener(e -> cars.lowerBedButton());
 
         liftBedButton.addActionListener(e -> cars.liftBedButton());
+
+
 
     }
 

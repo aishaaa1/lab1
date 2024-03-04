@@ -26,6 +26,12 @@ public class VehicleImage {
 
     public int getImageWidth() { return image.getWidth();}
 
+    public boolean isNotWithinBounds(int panelWidth) {
+        return point.x < 0 && vehicle.isWest()
+                || (point.x + getImageWidth() >= panelWidth
+                && vehicle.isWest());
+    }
+
     public int getX() {return point.x;}
 
     public boolean isSameModelName(String modelName) {return vehicle.getModelName().equals(modelName);}

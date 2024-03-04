@@ -5,7 +5,8 @@ public class VehicleModel implements  ActionButtons, Manager {
 
     public final static VehicleFactory factory = new VehicleFactory();
     private final static VehicleImageFactory imageFactory = new VehicleImageFactory();
-    private final List<Vehicle> cars;
+    WorkShopState state;
+    private final List<Vehicle> cars = new ArrayList<>();
     //need VehicleImages to remove add car maybe
     //private final ArrayList<VehicleImage> vehicleImages;
     private final List<CarObserver> observers = new ArrayList<>();
@@ -22,13 +23,18 @@ public class VehicleModel implements  ActionButtons, Manager {
     }
 
 
-    void moveCars(){
+    void moveCars(int x){
         for (Vehicle car : cars){
-            if(notWithinBounds(car)) {
+            if(notWithinBounds(car, x)) {
+                /*
+                We don't want this part
+
                 if (car instanceof Volvo240) {
                     car.stopEngine();
                 }
-                else {
+
+
+                else */{
                     reverseVehicle(car);
                 }
             }
@@ -37,11 +43,15 @@ public class VehicleModel implements  ActionButtons, Manager {
         newState();
     }
 
-    public boolean notWithinBounds(Vehicle v){
-        boolean leftScreen = 0 > v.getPosition().getX() && Direction.WEST == v.getDirection();
-        boolean rightScreen = 800 < v.getPosition().getX() + 100 && Direction.EAST == v.getDirection();
-        return leftScreen || rightScreen;
+
+    public boolean notWithinBounds(Vehicle v, int width){
+        VehicleImage image = imageFactory.createImage(v, v.getPosition().getX(), v.getPosition().getY());
+        boolean left = 0 > v.getPosition().getX() && v.isWest();
+        boolean right = width < v.getPosition().getX() + image.getImageWidth() && v.isEast();
+        return left || right;
     }
+
+
 
 
     @Override
