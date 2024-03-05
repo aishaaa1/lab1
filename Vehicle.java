@@ -9,13 +9,16 @@ public abstract class Vehicle implements Movable {
     public double currentSpeed;
     private Color color;
     public String modelName;
+    private Loadable loadable;
     public Vehicle(int nrDoors, Color color, double enginePower, String modelName) {
         this.nrDoors = nrDoors;
         this.color = color;
         this.enginePower = enginePower;
         this.modelName = modelName;
         this.position = new Position(0,0);
-        this.direction = Direction.EAST; // This was always null therefore I added a default direction
+        this.direction = Direction.EAST;
+        this.loadable = Loadable.FALSE;
+
         stopEngine();
     }
     protected Position getPosition() {

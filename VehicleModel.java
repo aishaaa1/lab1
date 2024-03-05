@@ -5,11 +5,22 @@ public class VehicleModel implements  ActionButtons, Manager {
 
     public final static VehicleFactory factory = new VehicleFactory();
     private final static VehicleImageFactory imageFactory = new VehicleImageFactory();
-    private final List<Vehicle> cars;
+    private final List<Vehicle> cars = new ArrayList<>();
     //need VehicleImages to remove add car maybe
-    //private final ArrayList<VehicleImage> vehicleImages;
+    //private final ArrayList<VehicleImage> vehicleImages = new ArrayList<>();
     private final List<CarObserver> observers = new ArrayList<>();
     private final ArrayList<CarManagementObserver> managementObservers = new ArrayList<>();
+
+    private final WorkShopFactory workShopFactory = new WorkShopFactory();
+    private final WorkShop workShop =  workShopFactory.createVolvoShop(700, 0);
+    private static final int CAR_WIDTH = 100;
+    private static final int WIDTH = 800;
+
+    public VehicleModel(Vehicle v){
+        v.setLoadable();
+        cars.add(v);
+        //vehicleImages.add(image);
+    }
 
 
 
@@ -25,7 +36,7 @@ public class VehicleModel implements  ActionButtons, Manager {
     void moveCars(){
         for (Vehicle car : cars){
             if(notWithinBounds(car)) {
-                if (car instanceof Volvo240) {
+                if (Loadable.TRUE == car.getLoadable()) {
                     car.stopEngine();
                 }
                 else {
@@ -39,8 +50,12 @@ public class VehicleModel implements  ActionButtons, Manager {
 
     public boolean notWithinBounds(Vehicle v){
         boolean leftScreen = 0 > v.getPosition().getX() && Direction.WEST == v.getDirection();
-        boolean rightScreen = 800 < v.getPosition().getX() + 100 && Direction.EAST == v.getDirection();
+        boolean rightScreen = WIDTH < v.getPosition().getX() + CAR_WIDTH && Direction.EAST == v.getDirection();
         return leftScreen || rightScreen;
+    }
+
+    public boolean inWorkShopRange(Vehicle v, WorkShop w) {
+        return v.getPosition().getY() == w.getY();
     }
 
 
@@ -112,20 +127,21 @@ public class VehicleModel implements  ActionButtons, Manager {
     @Override
     public void addVehicle(){
         if(cars.size() < 6) {
+            int positionY = cars.size()  * 100;
+
             Vehicle v = factory.createRandVehicle();
             cars.add(v);
-            int positionY = (cars.size() - 1) * 100;
-            notifyCarAdded(imageFactory.createImage(v, 0, positionY));
+            VehicleImage image = imageFactory.createImage(v, 0, positionY);
+            //vehicleImages.add(image);
+
+            notifyCarAdded(image);
         }
 
     }
     @Override
     public void removeVehicle(){
-        if(cars.size() - 1 > 1) {
+        if(cars.size() > 1) {
             cars.removeLast();
-        }
-        else if (cars.size() == 1) {
-            cars.removeFirst();
         }
         notifyCarRemoved();
     }

@@ -15,6 +15,8 @@ public class WorkShop {
         this.point = point;
     }
     public Point getPoint() { return point; }
+    public int getX(){ return point.x;}
+    public int getY(){ return point.y;}
     public void drawWorkShop (Graphics g) {
         g.drawImage(workShop, point.x, point.y, null);
     }

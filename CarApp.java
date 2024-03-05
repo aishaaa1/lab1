@@ -5,13 +5,18 @@ import java.util.List;
 
 
 public class CarApp  {
-
+    private static  VehicleFactory vehicleFactory = new VehicleFactory();
+    private static VehicleImageFactory vehicleImageFactory = new VehicleImageFactory();
     public static void main(String[] args) {
         // Instance of this class
         // Start a new view and send a reference of self
 
-        VehicleModel model = new VehicleModel();
-        CarView frame = new CarView("CarSim 1.0");
+        VehicleImage volvoImage = vehicleImageFactory.createVolvoImage(0,0);
+        Volvo240 volvo240 = vehicleFactory.createVolvo();
+        volvo240.setLoadable();
+        VehicleModel model = new VehicleModel(volvo240);
+        CarView frame = new CarView("CarSim 1.0", volvoImage);
+
 
         //Model changes -> View updates
         model.addObservers(frame);

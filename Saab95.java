@@ -22,4 +22,6 @@ public class Saab95 extends Vehicle implements hasTurbo {
     public String getModelName() {
         return "Saab95";
     }
+
+
 }
