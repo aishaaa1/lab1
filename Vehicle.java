@@ -1,28 +1,34 @@
 import java.awt.*;
 
 public abstract class Vehicle implements Movable {
-    private static final Direction[] dirs = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+    protected enum Direction {
+        NORTH, EAST, SOUTH, WEST;
+        private static final Direction[] dirs = values();
+        public Direction turnLeft() {return dirs[(this.ordinal() + 1) % dirs.length];}
+        public Direction turnRight() {return dirs[(this.ordinal() - 1) % dirs.length];}
+    }
     protected Position position;
-    public Direction direction;
+    private Direction direction;
     private final int nrDoors;
     public final double enginePower;
     public double currentSpeed;
     private Color color;
     public String modelName;
+
     public Vehicle(int nrDoors, Color color, double enginePower, String modelName) {
         this.nrDoors = nrDoors;
         this.color = color;
         this.enginePower = enginePower;
         this.modelName = modelName;
         this.position = new Position(0,0);
-        this.direction = Direction.EAST;
-
-
+        this.direction = Direction.EAST; // This was always null therefore I added a default direction
         stopEngine();
     }
     protected Position getPosition() {
         return this.position;
     }
+    protected int getY() {return this.position.getY();}
+    protected int getX() {return this.position.getX();}
     protected String getModelName(){return this.modelName;} // Get model name was not defined here
     protected Direction getDirection() { return this.direction; }
     protected void currentSpeed(double currentSpeed) {
@@ -52,6 +58,7 @@ public abstract class Vehicle implements Movable {
         color = clr;
     }
     public void setPosition (int x, int y) {this.position = new Position(x, y);}
+
     public void startEngine(){
         currentSpeed = 0.1;
     }
@@ -63,7 +70,7 @@ public abstract class Vehicle implements Movable {
         currentSpeed = Math.min(getCurrentSpeed() + speedFactor() * amount, enginePower);
     }
 
-     protected double speedFactor() {
+    protected double speedFactor() {
         return enginePower * 0.01 * 1.54;
     }
 
@@ -97,57 +104,29 @@ public abstract class Vehicle implements Movable {
     @Override
     public void move() {
         int x = position.getX();
-        int y = position.getY();
-        int x1 = x;
-        int y1 = y;
-        //startEngine(); // If we call this we reset the speed of the vehicle to 0.1 which is not good
         if (direction == Direction.EAST) {
-            x1 += (int) getCurrentSpeed();
+            x += (int) currentSpeed;
         }
         if (direction == Direction.WEST) {
-            x1 -= (int) getCurrentSpeed();
+            x -= (int) currentSpeed;
         }
-        if (direction == Direction.NORTH) {
-            y1 += (int) getCurrentSpeed();
-        }
-        if (direction == Direction.SOUTH) {
-            y1 -= (int) getCurrentSpeed();
-        }
-        int amount = (int) Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
-        /*gas(amount);  We do not need to change the gas value in the move
-        stopEngine();*/  // This is again not useful because we stop the car everytime the move function is called
-        position = new Position(x1, y1);
+        setPosition(x, position.getY());
     }
+
     @Override
     public void turnLeft() {
-        direction = getNext(direction, -1);
+        direction = direction.turnLeft();
     }
     @Override
     public void turnRight() {
-        direction = getNext(direction, 1);
+        direction = direction.turnRight();
     }
-    private static Direction getNext (Direction dir, int j) {
-        int index = 0;
-        for (int i = 0; i < dirs.length; i++) {
-            if (dir == dirs[i]) {
-                index = i;
-            }
-        }
-        index = index + j;
-        if (index < 0) {
-            index = dirs.length - 1;
-        }
-        if (index > dirs.length - 1) {
-            index = 0;
-        }
-        int find = Math.max(0, Math.min(index, dirs.length - 1));
-        return dirs[find];
+    public boolean isWest() {
+        return direction == Direction.WEST;
     }
-    @Override
-    public String toString() {
-        return "The car is a " + this.modelName + " of " + this.getClass();
+    public boolean isEast() {
+        return direction == Direction.EAST;
     }
 
-    public void setDirection(Direction direction) {
-    }
 }
+

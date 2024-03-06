@@ -8,53 +8,48 @@ import java.util.List;
 
 // This panel represents the animated part of the view with the car images.
 public class  DrawPanel extends JPanel{
-    /*
-    Creates the images needed
-     */
     public final static WorkShopFactory workShopFactory = new WorkShopFactory();
     private final List<VehicleImage> vehicleImages = new ArrayList<>();
-    private final Collection<WorkShop> workShopImages = new ArrayList<>();
+    private final Collection<WorkShopImage> workShopImageImages = new ArrayList<>();
 
     // Initializes the panel and reads the images
     public DrawPanel(int x, int y) {
         this.setDoubleBuffered(true);
         this.setPreferredSize(new Dimension(x, y));
         this.setBackground(Color.yellow);
-        //this.vehicleImages = vehicleImages;
 
-        workShopImages.add(workShopFactory.createVolvoShop(700, 0));
+        workShopImageImages.add(workShopFactory.createVolvoShop(700, 0));
     }
     /*
-    Corresponds with the car's modelName, more general compared to before.
+    *Corresponds with the car's modelName, more general compared to before.
     */
-    void moveImage(int x, Vehicle modelName) {
+    void moveImage(VehicleImage v) {
         for (VehicleImage vehicleImage : vehicleImages) {
-            if (vehicleImage.isSameModelName(modelName)){
-                vehicleImage.moveImage(x);
-
-            }
+                vehicleImage.moveImage();
         }
         repaint();
     }
-
     void addImage(VehicleImage vehicleImage){
         vehicleImages.add(vehicleImage);
-
-        repaint();
     }
-
     void removeImage(){
         vehicleImages.removeLast();
+    }
+    public void removeThisImage(VehicleImage image) {
+        vehicleImages.remove(image);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (VehicleImage vehicleImage : vehicleImages) {
-            vehicleImage.drawImage(g);
+                vehicleImage.drawImage(g);
+
         }
-        for (WorkShop workShop : workShopImages) {
-            workShop.drawWorkShop(g);
+        for (WorkShopImage workShopImage : workShopImageImages) {
+            workShopImage.drawWorkShop(g);
         }
+
     }
+
 }

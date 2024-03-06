@@ -1,4 +1,4 @@
-public interface ActionButtons {
+public interface Actions {
 
     void gas(int amount);
     void brake(int amount);

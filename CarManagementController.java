@@ -11,8 +11,7 @@ public class CarManagementController implements CarManagementStrategy {
     }
 
     @Override
-    public void addVehicle() {model.addVehicle();
-    }
+    public void addVehicle() {model.addVehicle();}
 
     @Override
     public void removeVehicle() {model.removeVehicle();}

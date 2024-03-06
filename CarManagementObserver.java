@@ -5,4 +5,5 @@ public interface CarManagementObserver {
     */
     void actOnCarAdded(VehicleImage vehicleImage);
     void actOnCarRemoved();
+    void actOnCarRemoved(VehicleImage image);
 }

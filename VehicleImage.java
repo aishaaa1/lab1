@@ -17,17 +17,27 @@ public class VehicleImage {
         this.image = factory.createImage("pics/" + this.vehicle.getModelName() + ".jpg");
 
     }
-    public void moveImage(int x) {
-        point.x = x;
+
+    public Vehicle getVehicle(){
+        return this.vehicle;
     }
+
+
+    public void moveImage() {
+        point.x = this.getVehicle().getX();
+
+    }
+
     protected void drawImage(Graphics g) {
         g.drawImage(image, point.x, point.y, null);
     }
 
     public int getImageWidth() { return image.getWidth();}
 
+
+
     public int getX() {return point.x;}
+    public int getY() {return point.y;}
 
     public boolean isSameModelName(String modelName) {return vehicle.getModelName().equals(modelName);}
-    public boolean isSameCar(Vehicle other) {return vehicle.equals(other);}
 }

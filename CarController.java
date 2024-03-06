@@ -16,7 +16,7 @@ public class CarController extends JPanel implements HasButtons{
     // member fields:
 
     // The delay (ms) corresponds to 20 updates a sec (hz)
-    private final VehicleModel cars;
+    private final VehicleModel model;
     JPanel gasPanel = new JPanel();
     JPanel controlPanel = new JPanel();
     JLabel gasLabel = new JLabel();
@@ -32,8 +32,8 @@ public class CarController extends JPanel implements HasButtons{
 
     // The frame that represents this instance View of the MVC patter
 
-    public CarController (VehicleModel cars){
-        this.cars = cars;
+    public CarController (VehicleModel model){
+        this.model = model;
         initComponents();
     }
 
@@ -42,12 +42,12 @@ public class CarController extends JPanel implements HasButtons{
         this.timer.start();
     }
 
-    /* Each step the TimerListener moves all the cars in the list and tells the
+    /* Each step the TimerListener moves all the model in the list and tells the
      * view to update its images. Change this method to your needs.
      * */
     private class TimerListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-                cars.moveCars();
+                model.moveCars(X);
         }
     }
 
@@ -93,21 +93,21 @@ public class CarController extends JPanel implements HasButtons{
         stopButton.setPreferredSize(new Dimension(X/6-20,200));
         this.add(stopButton);
 
-        startButton.addActionListener(e -> cars.startAllCars());
+        startButton.addActionListener(e -> model.startAllCars());
 
-        stopButton.addActionListener(e -> cars.stopAllCars());
+        stopButton.addActionListener(e -> model.stopAllCars());
 
-        gasButton.addActionListener(e -> cars.gas(gasAmount));
+        gasButton.addActionListener(e -> model.gas(gasAmount));
 
-        brakeButton.addActionListener(e -> cars.brake(gasAmount));
+        brakeButton.addActionListener(e -> model.brake(gasAmount));
 
-        turboOnButton.addActionListener(e -> cars.saabTurboOn());
+        turboOnButton.addActionListener(e -> model.saabTurboOn());
 
-        turboOffButton.addActionListener(e -> cars.saabTurboOff());
+        turboOffButton.addActionListener(e -> model.saabTurboOff());
 
-        lowerBedButton.addActionListener(e -> cars.lowerBedButton());
+        lowerBedButton.addActionListener(e -> model.lowerBedButton());
 
-        liftBedButton.addActionListener(e -> cars.liftBedButton());
+        liftBedButton.addActionListener(e -> model.liftBedButton());
 
     }
 

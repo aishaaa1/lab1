@@ -1,26 +1,34 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleModel implements  ActionButtons, Manager {
+public class VehicleModel implements  Actions, Manager {
 
-    public final static VehicleFactory factory = new VehicleFactory();
-    private final static VehicleImageFactory imageFactory = new VehicleImageFactory();
-    private final List<Vehicle> cars = new ArrayList<>();
+    public final VehicleFactory factory = new VehicleFactory();
+    private final VehicleImageFactory imageFactory = new VehicleImageFactory();
+    private final WorkShopFactory workShopFactory = new WorkShopFactory();
+    private final WorkShopImage volvoWorkshop = workShopFactory.createVolvoShop(700, 0);
     //need VehicleImages to remove add car maybe
-    //private final ArrayList<VehicleImage> vehicleImages = new ArrayList<>();
+    private final ArrayList<VehicleImage> vehicles = new ArrayList<>();
     private final List<CarObserver> observers = new ArrayList<>();
     private final ArrayList<CarManagementObserver> managementObservers = new ArrayList<>();
 
-    private final WorkShopFactory workShopFactory = new WorkShopFactory();
-    private final WorkShop workShop =  workShopFactory.createVolvoShop(700, 0);
-    private static final int CAR_WIDTH = 100;
-    private static final int WIDTH = 800;
 
-    public VehicleModel(){
-        //vehicleImages.add(image);
+    void moveCars(int x){
+        for (VehicleImage v : vehicles){
+            Vehicle car = v.getVehicle();
+            if (notWithinBounds(car, x)) {
+
+                if (inVolvoWorkshopRange(v, volvoWorkshop)) {
+                    notifyThisVehicleRemoved(v);
+                }
+                else {
+                    reverseVehicle(car);
+                }
+            }
+            car.move();
+        }
+        newState();
     }
-
-
 
     public void reverseVehicle(Vehicle car){
         car.stopEngine();
@@ -30,40 +38,23 @@ public class VehicleModel implements  ActionButtons, Manager {
         car.gas(0.5);
     }
 
-
-    void moveCars(){
-        for (Vehicle car : cars){
-            if (car instanceof Volvo240) {
-                if (car.position.getX() >= workShop.getX() && car.position.getX() <= workShop.getX() + CAR_WIDTH) {
-                    if (car.position.getY() >= workShop.getY() && car.position.getY() <= workShop.getY() + CAR_WIDTH) {
-                        car.stopEngine();
-                    }
-                }
-            }
-            if (notWithinBounds(car)) {
-                { reverseVehicle(car);}
-            }
-            car.move();
-        }
-        newState();
+    boolean inVolvoWorkshopRange(VehicleImage v, WorkShopImage w){
+        return  v.getVehicle() instanceof Volvo240 && v.getY() == w.getY();
     }
 
-    public boolean notWithinBounds(Vehicle v){
-        boolean leftScreen = 0 > v.getPosition().getX() && Direction.WEST == v.getDirection();
-        boolean rightScreen = WIDTH < v.getPosition().getX() + CAR_WIDTH && Direction.EAST == v.getDirection();
-        return leftScreen || rightScreen;
-    }
-
-    public boolean inWorkShopRange(Vehicle v, WorkShop w) {
-        return v.getPosition().getY() == w.getY();
+    public boolean notWithinBounds(Vehicle v, int width){
+        VehicleImage image = imageFactory.createImage(v, v.getPosition().getX(), v.getPosition().getY());
+        boolean left = 0 > v.getPosition().getX() && v.isWest();
+        boolean right = width < v.getPosition().getX() + image.getImageWidth() && v.isEast();
+        return left || right;
     }
 
 
     @Override
     public void gas(int amount) {
         double gas = ((double) amount) / 100;
-        for (Vehicle car : cars) {
-            car.gas(gas);
+        for (VehicleImage v : vehicles) {
+            v.getVehicle().gas(gas);
 
         }
     }
@@ -72,104 +63,98 @@ public class VehicleModel implements  ActionButtons, Manager {
     @Override
     public void brake(int amount) {
         double brake = ((double) amount) / 100;
-        for (Vehicle car : cars){
-            car.brake(brake);
+        for (VehicleImage v : vehicles) {
+            v.getVehicle().brake(brake);
+
         }
     }
 
     @Override
     public void saabTurboOn() {
-        for (Vehicle v : cars) {
-            if (v instanceof hasTurbo) {
-                ((Saab95) v).setTurboOn();
+        for (VehicleImage v : vehicles) {
+            if (v.getVehicle() instanceof hasTurbo) {
+                ((Saab95) v.getVehicle()).setTurboOn();
             }
         }
     }
 
     @Override
     public void saabTurboOff() {
-        for (Vehicle v : cars) {
-            if (v instanceof hasTurbo) {
-                ((Saab95) v).setTurboOff();
+        for (VehicleImage v : vehicles) {
+            if (v.getVehicle() instanceof hasTurbo) {
+                ((Saab95) v.getVehicle()).setTurboOff();
             }
         }
     }
     @Override
     public void liftBedButton(){
-        for (Vehicle v : cars){
-            if(v instanceof MoveFlake){
-                ((Scania)v).raise();
+        for (VehicleImage v : vehicles){
+            if(v.getVehicle() instanceof MoveFlake){
+                ((Scania) v.getVehicle()).raise();
             }
         }
 
     }
     @Override
     public void lowerBedButton(){
-        for(Vehicle v: cars){
+        for(VehicleImage v : vehicles){
             if(v instanceof MoveFlake){
-                ((Scania) v).lower();
+                ((Scania) v.getVehicle()).lower();
             }
         }
     }
     @Override
     public void startAllCars() {
-        for (Vehicle v : cars) {
-            v.startEngine();
+        for (VehicleImage v : vehicles) {
+            v.getVehicle().startEngine();
         }
     }
     @Override
     public void stopAllCars() {
-        for (Vehicle v : cars) {
-            v.stopEngine();
+        for (VehicleImage v : vehicles) {
+            v.getVehicle().stopEngine();
         }
     }
 
     @Override
     public void addVehicle(){
-        if(cars.size() < 6) {
-            int positionY = cars.size()  * 100;
-
+        if(vehicles.size() < 6) {
+            int positionY = vehicles.size() * 100;
             Vehicle v = factory.createRandVehicle();
-            cars.add(v);
-            VehicleImage image = imageFactory.createImage(v, 0, positionY);
-            //vehicleImages.add(image);
 
-            notifyCarAdded(image);
+            VehicleImage vehicleImage = imageFactory.createImage(v, 0, positionY);
+            vehicles.add(vehicleImage);
+            notifyCarAdded(vehicleImage);
         }
 
     }
-
-    public void addVehicle(Vehicle v, VehicleImage image){
-        if(cars.size() < 6) {
-            cars.add(v);
-            //vehicleImages.add(image);
-
-            notifyCarAdded(image);
-        }
-
-    }
-
     @Override
     public void removeVehicle(){
-        if(cars.size() > 1) {
-            cars.removeLast();
+        if(!vehicles.isEmpty()) {
+            vehicles.removeLast();
         }
         notifyCarRemoved();
+    }
+    @Override
+    public void removeThisVehicle(VehicleImage image){
+        vehicles.remove(image);
+        notifyThisVehicleRemoved(image);
+
     }
 
     public void addObservers(CarObserver ob){
         observers.add(ob);
 
     }
-    void notifyObservers(Vehicle car, int x){
+    void notifyObservers(VehicleImage v){
         for (CarObserver ob : observers){
-            ob.updateVehicle(car, x);
+            ob.updateVehicle(v);
         }
     }
 
     void newState(){
-        for (Vehicle car : cars){
-            notifyObservers(car, car.getPosition().getX());
+        for (VehicleImage v : vehicles){
+            notifyObservers(v);
         }
     }
 
@@ -185,6 +170,13 @@ public class VehicleModel implements  ActionButtons, Manager {
     public void notifyCarRemoved(){
         for (CarManagementObserver ob : managementObservers){
             ob.actOnCarRemoved();
+
+        }
+    }
+    public void notifyThisVehicleRemoved(VehicleImage v){
+        for (CarManagementObserver ob : managementObservers){
+            ob.actOnCarRemoved(v);
+
         }
     }
 
