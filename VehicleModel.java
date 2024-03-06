@@ -17,7 +17,6 @@ public class VehicleModel implements  Actions, Manager {
         for (VehicleImage v : vehicles){
             Vehicle car = v.getVehicle();
             if (notWithinBounds(car, x)) {
-
                 if (inVolvoWorkshopRange(v, volvoWorkshop)) {
                     notifyThisVehicleRemoved(v);
                 }
@@ -137,7 +136,7 @@ public class VehicleModel implements  Actions, Manager {
     }
 
     public void removeThisVehicle(VehicleImage image){
-        vehicles.remove(image);
+        vehicles.removeFirst();
         notifyThisVehicleRemoved(image);
 
     }
