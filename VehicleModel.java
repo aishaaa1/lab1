@@ -16,8 +16,7 @@ public class VehicleModel implements  ActionButtons, Manager {
     private static final int CAR_WIDTH = 100;
     private static final int WIDTH = 800;
 
-    public VehicleModel(Vehicle v){
-        cars.add(v);
+    public VehicleModel(){
         //vehicleImages.add(image);
     }
 
@@ -34,15 +33,15 @@ public class VehicleModel implements  ActionButtons, Manager {
 
     void moveCars(){
         for (Vehicle car : cars){
-            if (notWithinBounds(car)) {
-                if (car instanceof Volvo240) {
-                    if (car.position.getX() >= workShop.getX() && car.position.getX() <= workShop.getX() + CAR_WIDTH) {
-                        if (car.position.getY() >= workShop.getY() && car.position.getY() <= workShop.getY() + CAR_WIDTH) {
-                            car.stopEngine();
-                        }
+            if (car instanceof Volvo240) {
+                if (car.position.getX() >= workShop.getX() && car.position.getX() <= workShop.getX() + CAR_WIDTH) {
+                    if (car.position.getY() >= workShop.getY() && car.position.getY() <= workShop.getY() + CAR_WIDTH) {
+                        car.stopEngine();
                     }
                 }
-                else {reverseVehicle(car);}
+            }
+            if (notWithinBounds(car)) {
+                { reverseVehicle(car);}
             }
             car.move();
         }
@@ -139,6 +138,17 @@ public class VehicleModel implements  ActionButtons, Manager {
         }
 
     }
+
+    public void addVehicle(Vehicle v, VehicleImage image){
+        if(cars.size() < 6) {
+            cars.add(v);
+            //vehicleImages.add(image);
+
+            notifyCarAdded(image);
+        }
+
+    }
+
     @Override
     public void removeVehicle(){
         if(cars.size() > 1) {

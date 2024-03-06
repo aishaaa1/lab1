@@ -4,7 +4,7 @@ public class CarView extends JFrame implements CarObserver, CarManagementObserve
     private static final int WIDTH = 800;
     private static final int HEIGHT = 800;
     DrawPanel drawPanel;
-    public CarView(String title, VehicleImage volvoImage) {
+    public CarView(String title) {
 
         initComponents(title);
         this.drawPanel = new DrawPanel(WIDTH, HEIGHT - 240);
