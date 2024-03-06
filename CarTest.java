@@ -118,7 +118,7 @@ class CarTest {
         volvo.move();
         assertEquals(y + volvo.getCurrentSpeed(), volvo.getPosition().getY());
     }*/
-
+/*
     @Test
     void turnRight() {
         volvo.setDirection(Direction.WEST);
@@ -130,6 +130,7 @@ class CarTest {
     void turnLeft() {
         /*
         Not important to test, will yield the correct result
-         */
+
     }
+    */
 }

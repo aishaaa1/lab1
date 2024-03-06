@@ -12,10 +12,11 @@ public class CarApp  {
         WorkShopModel workShopModel = new WorkShopModel(new Volvo240(), new CarRepairShop<>(10));
         VehicleModel model = new VehicleModel();
         CarView frame = new CarView("CarSim 1.0", workShopModel);
-/*
+
+
         workShopModel.addObservers(frame);
         workShopModel.addManagementObserver(frame);
-*/
+
 
         //Model changes -> View updates
         workShopModel.addObservers(frame);

@@ -25,7 +25,7 @@ public class VehicleModel implements  ActionButtons, Manager {
 
     void moveCars(int x){
         for (Vehicle car : cars){
-            if(notWithinBounds(car, x)) {
+            if (notWithinBounds(car, x)) {
                 /*
                 We don't want this part
 
@@ -42,6 +42,7 @@ public class VehicleModel implements  ActionButtons, Manager {
         }
         newState();
     }
+
 
 
     public boolean notWithinBounds(Vehicle v, int width){
