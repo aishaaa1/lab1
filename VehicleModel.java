@@ -17,7 +17,6 @@ public class VehicleModel implements  ActionButtons, Manager {
     private static final int WIDTH = 800;
 
     public VehicleModel(Vehicle v){
-        v.setLoadable();
         cars.add(v);
         //vehicleImages.add(image);
     }
@@ -35,13 +34,15 @@ public class VehicleModel implements  ActionButtons, Manager {
 
     void moveCars(){
         for (Vehicle car : cars){
-            if(notWithinBounds(car)) {
-                if (Loadable.TRUE == car.getLoadable()) {
-                    car.stopEngine();
+            if (notWithinBounds(car)) {
+                if (car instanceof Volvo240) {
+                    if (car.position.getX() >= workShop.getX() && car.position.getX() <= workShop.getX() + CAR_WIDTH) {
+                        if (car.position.getY() >= workShop.getY() && car.position.getY() <= workShop.getY() + CAR_WIDTH) {
+                            car.stopEngine();
+                        }
+                    }
                 }
-                else {
-                    reverseVehicle(car);
-                }
+                else {reverseVehicle(car);}
             }
             car.move();
         }
@@ -150,7 +151,7 @@ public class VehicleModel implements  ActionButtons, Manager {
         observers.add(ob);
 
     }
-    void notifyObservers(String car, int x){
+    void notifyObservers(Vehicle car, int x){
         for (CarObserver ob : observers){
             ob.updateVehicle(car, x);
         }
@@ -158,7 +159,7 @@ public class VehicleModel implements  ActionButtons, Manager {
 
     void newState(){
         for (Vehicle car : cars){
-            notifyObservers(car.getModelName(), car.getPosition().getX());
+            notifyObservers(car, car.getPosition().getX());
         }
     }
 

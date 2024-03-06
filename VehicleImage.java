@@ -29,4 +29,5 @@ public class VehicleImage {
     public int getX() {return point.x;}
 
     public boolean isSameModelName(String modelName) {return vehicle.getModelName().equals(modelName);}
+    public boolean isSameCar(Vehicle other) {return vehicle.equals(other);}
 }

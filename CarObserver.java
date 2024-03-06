@@ -1,4 +1,4 @@
 public interface CarObserver {
 
-    void updateVehicle(String car, int x);
+    void updateVehicle(Vehicle car, int x);
 }

@@ -2,7 +2,7 @@ import java.util.Random;
 import java.util.Random.*;
 public class VehicleFactory {
     //An array to hold the vehicle classes, <?>: ? wild card  "class of any type"
-    private final Class<?>[] vehicleClasses = {Saab95.class, Scania.class};
+    private final Class<?>[] vehicleClasses = {Saab95.class, Scania.class,Volvo240.class};
 
     public Vehicle createRandVehicle(){
         //random index within bounds of vehicleClasses array

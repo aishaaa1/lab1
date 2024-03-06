@@ -13,7 +13,6 @@ public class CarApp  {
 
         VehicleImage volvoImage = vehicleImageFactory.createVolvoImage(0,0);
         Volvo240 volvo240 = vehicleFactory.createVolvo();
-        volvo240.setLoadable();
         VehicleModel model = new VehicleModel(volvo240);
         CarView frame = new CarView("CarSim 1.0", volvoImage);
 
