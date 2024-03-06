@@ -24,7 +24,7 @@ public class CarView extends JFrame implements CarObserver, CarManagementObserve
 
     @Override
     public void updateVehicle() {
-        drawPanel.moveImage();
+        drawPanel.moveImages();
     }
 
     @Override
