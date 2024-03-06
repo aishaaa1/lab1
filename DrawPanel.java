@@ -23,7 +23,7 @@ public class  DrawPanel extends JPanel{
     /*
     *Corresponds with the car's modelName, more general compared to before.
     */
-    void moveImage(VehicleImage v) {
+    void moveImage() {
         for (VehicleImage vehicleImage : vehicleImages) {
                 vehicleImage.moveImage();
         }

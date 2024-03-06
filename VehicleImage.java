@@ -1,8 +1,7 @@
-import javax.imageio.ImageIO;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
 
 public class VehicleImage {
     public static ImageFactory factory = new ImageFactory();
@@ -39,5 +38,5 @@ public class VehicleImage {
     public int getX() {return point.x;}
     public int getY() {return point.y;}
 
-    public boolean isSameModelName(String modelName) {return vehicle.getModelName().equals(modelName);}
+    //public boolean isSameModelName(String modelName) {return vehicle.getModelName().equals(modelName);}
 }

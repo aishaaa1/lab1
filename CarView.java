@@ -1,7 +1,5 @@
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
 
 public class CarView extends JFrame implements CarObserver, CarManagementObserver {
     private static final int WIDTH = 800;
@@ -25,8 +23,8 @@ public class CarView extends JFrame implements CarObserver, CarManagementObserve
     }
 
     @Override
-    public void updateVehicle(VehicleImage v) {
-        drawPanel.moveImage(v);
+    public void updateVehicle() {
+        drawPanel.moveImage();
     }
 
     @Override

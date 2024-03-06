@@ -27,7 +27,7 @@ public class VehicleModel implements  Actions, Manager {
             }
             car.move();
         }
-        newState();
+        notifyObservers();
     }
 
     public void reverseVehicle(Vehicle car){
@@ -135,7 +135,7 @@ public class VehicleModel implements  Actions, Manager {
         }
         notifyCarRemoved();
     }
-    @Override
+
     public void removeThisVehicle(VehicleImage image){
         vehicles.remove(image);
         notifyThisVehicleRemoved(image);
@@ -146,17 +146,13 @@ public class VehicleModel implements  Actions, Manager {
         observers.add(ob);
 
     }
-    void notifyObservers(VehicleImage v){
-        for (CarObserver ob : observers){
-            ob.updateVehicle(v);
+    void notifyObservers(){
+        for (CarObserver ob : observers) {
+            ob.updateVehicle();
         }
     }
 
-    void newState(){
-        for (VehicleImage v : vehicles){
-            notifyObservers(v);
-        }
-    }
+
 
     public void addManagementObserver(CarManagementObserver ob){
         managementObservers.add(ob);

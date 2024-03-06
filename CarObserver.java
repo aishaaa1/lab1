@@ -1,4 +1,4 @@
 public interface CarObserver {
 
-    void updateVehicle(VehicleImage v);
+    void updateVehicle();
 }
