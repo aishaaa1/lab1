@@ -97,7 +97,7 @@ public class VehicleModel implements  Actions, Manager {
     @Override
     public void lowerBedButton(){
         for(VehicleImage v : vehicles){
-            if(v instanceof MoveFlake){
+            if(v.getVehicle() instanceof MoveFlake){
                 ((Scania) v.getVehicle()).lower();
             }
         }
